@@ -41,6 +41,11 @@ class App {
       })
       .catch(console.error);
 
+    // Keep aspect ratio on window resize.
+    window.addEventListener("resize", function () {
+      engine.resize();
+    });
+
     // run the main render loop
     engine.runRenderLoop(() => {
       scene.render();
