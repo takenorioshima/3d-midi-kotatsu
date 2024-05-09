@@ -24,7 +24,7 @@ class App {
     // hide/show the Inspector
     window.addEventListener("keydown", (ev) => {
       // Shift+Ctrl+Alt+I
-      if (ev.shiftKey && ev.ctrlKey && ev.altKey && ev.keyCode === 73) {
+      if (ev.shiftKey && ev.ctrlKey && ev.altKey && ev.code === "keyI") {
         if (scene.debugLayer.isVisible()) {
           scene.debugLayer.hide();
         } else {
