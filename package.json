@@ -1,6 +1,10 @@
 {
   "name": "3d-midi-kotatsu",
   "packageManager": "yarn@3.3.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build"
+  },
   "devDependencies": {
     "@babylonjs/core": "^7.5.0",
     "@babylonjs/gui": "^7.5.0",
