@@ -32,6 +32,7 @@ export default class Kotatsu extends AbstractMesh {
     SceneLoader.ImportMeshAsync('', './models/', 'kotatsu.glb', scene)
       .then((result) => {
         this.root = result.meshes[0];
+        this.root.scaling = Vector3.One();
         this.root.metadata = {
           isShuffled: false,
         };
