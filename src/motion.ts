@@ -78,46 +78,30 @@ export default class Motion {
 
   rotateAndScaleKotatsu() {
     const target = this.kotatsu.root;
-    Animation.CreateAndStartAnimation(
+    this._animate(
       'rotateKotatsu',
       target,
       'rotation',
-      this.fps,
       20,
       target.rotation,
-      this._randomVector3(),
-      0,
-      this.easeOutFunction
+      this._randomVector3()
     );
 
     const randomScale = Math.random() + Math.random() * 2;
-    Animation.CreateAndStartAnimation(
+    this._animate(
       'scaleKotatsu',
       target,
       'scaling',
-      this.fps,
       20,
       target.scaling,
-      new Vector3(randomScale, randomScale, randomScale),
-      0,
-      this.easeOutFunction
+      new Vector3(randomScale, randomScale, randomScale)
     );
   }
 
   heatKotatsu() {
     const target = this.kotatsu.heaterLight;
     const intensityFrom = Math.random() * 15 + 30;
-    console.log(intensityFrom);
-    Animation.CreateAndStartAnimation(
-      'heatKotatsu',
-      target,
-      'intensity',
-      this.fps,
-      10,
-      intensityFrom,
-      1,
-      0
-    );
+    this._animate('heatKotatsu', target, 'intensity', 10, intensityFrom, 1);
   }
 
   shuffleComponents() {
@@ -137,16 +121,36 @@ export default class Motion {
     const target = this.kotatsu.tableTop;
     const rotation_to = target.metadata.isRotated ? 0 : Math.PI * 3;
     target.metadata.isRotated = !target.metadata.isRotated;
-    Animation.CreateAndStartAnimation(
+    this._animate(
       'rotation',
-      this.kotatsu.tableTop,
+      target,
       'rotation.y',
-      this.fps,
       15,
-      this.kotatsu.tableTop.rotation.y,
-      rotation_to,
+      target.rotation.y,
+      rotation_to
+    );
+  }
+
+  private _animate(
+    name: string,
+    target: any,
+    targetProperty: string,
+    totalFrame: number,
+    from: any,
+    to: any,
+    easingFunction?: CircleEase
+  ) {
+    easingFunction = easingFunction ? easingFunction : this.easeOutFunction;
+    Animation.CreateAndStartAnimation(
+      name,
+      target,
+      targetProperty,
+      this.fps,
+      totalFrame,
+      from,
+      to,
       0,
-      this.easeOutFunction
+      easingFunction
     );
   }
 
