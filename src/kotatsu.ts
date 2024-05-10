@@ -16,6 +16,7 @@ export default class Kotatsu extends AbstractMesh {
 
   root: AbstractMesh;
   tableTop: TransformNode;
+  tableBase: AbstractMesh;
   futon: AbstractMesh;
   heater: AbstractMesh;
   heaterLight: PointLight;
@@ -31,6 +32,9 @@ export default class Kotatsu extends AbstractMesh {
     SceneLoader.ImportMeshAsync('', './models/', 'kotatsu.glb', scene)
       .then((result) => {
         this.root = result.meshes[0];
+        this.root.metadata = {
+          isShuffled: false,
+        };
 
         // Tabletop
         this.tableTop = new TransformNode('tableTop');
@@ -43,17 +47,32 @@ export default class Kotatsu extends AbstractMesh {
         // Futon
         this.futon = scene.getMeshByName('futon');
 
+        // Table base
+        this.tableBase = scene.getMeshByName('tableBase');
+        this.tableBase.parent = this.root;
+        scene.getMeshByName('lattice').parent = this.tableBase;
+        scene.getMeshByName('tableBasePanel').parent = this.tableBase;
+
         // Legs
         this.legTL = scene.getMeshByName('legTL');
         this.legTR = scene.getMeshByName('legTR');
         this.legBL = scene.getMeshByName('legBL');
         this.legBR = scene.getMeshByName('legBR');
+        this.legTL.parent = this.tableBase;
+        this.legTR.parent = this.tableBase;
+        this.legBL.parent = this.tableBase;
+        this.legBR.parent = this.tableBase;
 
         // Heater
         this.heater = scene.getMeshByName('heater');
         const heaterMaterial = new StandardMaterial('heaterMaterial');
         heaterMaterial.emissiveColor = new Color3(1, 0, 0);
         this.heater.material = heaterMaterial;
+        scene.getMeshByName('heaterCase').parent = this.heater;
+        scene.getMeshByName('heaterPanel').parent = this.heater;
+        scene.getMeshByName('meshLarge').parent = this.heater;
+        scene.getMeshByName('meshSmall').parent = this.heater;
+        this.heater.parent = this.tableBase;
 
         // Heater Light
         this.heaterLight = new PointLight(
@@ -63,7 +82,7 @@ export default class Kotatsu extends AbstractMesh {
         );
         this.heaterLight.diffuse = new Color3(1, 0, 0);
         this.heaterLight.intensity = 1;
-        this.heaterLight.parent = this.root;
+        this.heaterLight.parent = this.heater;
 
         // Spot light
         this.spotLight = new SpotLight(

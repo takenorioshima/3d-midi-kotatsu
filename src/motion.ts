@@ -8,6 +8,8 @@ import {
   Scene,
   Animation,
   Vector3,
+  AbstractMesh,
+  TransformNode,
 } from '@babylonjs/core';
 import Kotatsu from './kotatsu';
 
@@ -41,6 +43,9 @@ export default class Motion {
       }
       if (e.code === 'Digit3') {
         this.heatKotatsu();
+      }
+      if (e.code === 'Digit4') {
+        this.shuffleComponents();
       }
     });
   }
@@ -112,7 +117,70 @@ export default class Motion {
     );
   }
 
-  private _randomVector3() {
-    return new Vector3(Math.random() * 2, Math.random() * 2, Math.random() * 2);
+  shuffleComponents() {
+    let reset = false;
+    if (this.kotatsu.root.metadata.isShuffled && Math.random() < 0.3) {
+      reset = true;
+      this.kotatsu.root.metadata.isShuffled = false;
+    } else {
+      this.kotatsu.root.metadata.isShuffled = true;
+    }
+    this._moveScaleAndRotate(this.kotatsu.futon, reset);
+    this._moveScaleAndRotate(this.kotatsu.tableTop, reset);
+    this._moveScaleAndRotate(this.kotatsu.tableBase, reset);
+  }
+
+  private _randomVector3(multiple: number = 2) {
+    return new Vector3(
+      Math.random() * (multiple + 1) - multiple,
+      Math.random() * (multiple + 1) - multiple,
+      Math.random() * (multiple + 1) - multiple
+    );
+  }
+
+  private _moveScaleAndRotate(
+    target: AbstractMesh | TransformNode,
+    reset: boolean = false
+  ) {
+    const position_to = reset ? Vector3.Zero() : this._randomVector3(2);
+    const rotation_to = reset ? Vector3.Zero() : this._randomVector3(2);
+    const scaling = Math.random() * 2 + 0.3;
+    const scaling_to = reset
+      ? Vector3.One()
+      : new Vector3(scaling, scaling, scaling);
+
+    Animation.CreateAndStartAnimation(
+      'position',
+      target,
+      'position',
+      this.fps,
+      20,
+      target.position,
+      position_to,
+      0,
+      this.easeOutFunction
+    );
+    Animation.CreateAndStartAnimation(
+      'rotation',
+      target,
+      'rotation',
+      this.fps,
+      20,
+      target.rotation,
+      rotation_to,
+      0,
+      this.easeOutFunction
+    );
+    Animation.CreateAndStartAnimation(
+      'scaling',
+      target,
+      'scaling',
+      this.fps,
+      20,
+      target.scaling,
+      scaling_to,
+      0,
+      this.easeOutFunction
+    );
   }
 }
