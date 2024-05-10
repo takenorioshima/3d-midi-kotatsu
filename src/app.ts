@@ -10,6 +10,7 @@ import {
 } from '@babylonjs/core';
 import '@babylonjs/loaders/glTF';
 import Kotatsu from './kotatsu';
+import Animation from './animation';
 
 class App {
   constructor() {
@@ -34,8 +35,8 @@ class App {
       scene
     );
     camera.attachControl(canvas, true);
-    var light1: HemisphericLight = new HemisphericLight(
-      'light1',
+    var hemiLight: HemisphericLight = new HemisphericLight(
+      'hemiLight',
       new Vector3(1, 1, 0),
       scene
     );
@@ -54,6 +55,9 @@ class App {
 
     // Load model.
     const kotatsu = new Kotatsu(scene);
+
+    // Load animations.
+    const animation = new Animation(kotatsu, scene, camera, engine);
 
     // Keep aspect ratio on window resize.
     window.addEventListener('resize', function () {
