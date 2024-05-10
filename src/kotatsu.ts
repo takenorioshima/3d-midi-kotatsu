@@ -4,7 +4,7 @@ export default class Kotatsu extends AbstractMesh {
   constructor(public scene: Scene) {
     super("kotatsu", scene);
 
-    SceneLoader.ImportMeshAsync("kotatsu", "./models", "kotatsu.glb", scene)
+    SceneLoader.ImportMeshAsync("", "./models/", "kotatsu.glb", scene)
       .then((result) => {
         console.log(result);
       })
