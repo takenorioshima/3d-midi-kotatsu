@@ -39,6 +39,7 @@ export default class Kotatsu extends AbstractMesh {
 
         // Tabletop
         this.tableTop = new TransformNode('tableTop');
+        this.tableTop.metadata = { isRotated: false };
         this.tableTop.parent = this.root;
         const tableTopBase = scene.getMeshByName('tableTopBase');
         const tableTopPicture = scene.getMeshByName('tableTopPicture');

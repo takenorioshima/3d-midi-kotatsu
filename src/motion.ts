@@ -47,6 +47,9 @@ export default class Motion {
       if (e.code === 'Digit4') {
         this.shuffleComponents();
       }
+      if (e.code === 'Digit5') {
+        this.rotateTabletop();
+      }
     });
   }
 
@@ -128,6 +131,23 @@ export default class Motion {
     this._moveScaleAndRotate(this.kotatsu.futon, reset);
     this._moveScaleAndRotate(this.kotatsu.tableTop, reset);
     this._moveScaleAndRotate(this.kotatsu.tableBase, reset);
+  }
+
+  rotateTabletop() {
+    const target = this.kotatsu.tableTop;
+    const rotation_to = target.metadata.isRotated ? 0 : Math.PI * 3;
+    target.metadata.isRotated = !target.metadata.isRotated;
+    Animation.CreateAndStartAnimation(
+      'rotation',
+      this.kotatsu.tableTop,
+      'rotation.y',
+      this.fps,
+      15,
+      this.kotatsu.tableTop.rotation.y,
+      rotation_to,
+      0,
+      this.easeOutFunction
+    );
   }
 
   private _randomVector3(multiple: number = 2) {
