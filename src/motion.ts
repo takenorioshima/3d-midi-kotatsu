@@ -1,8 +1,20 @@
-import { ArcRotateCamera, Color4, Engine, Light, Scene } from '@babylonjs/core';
+import {
+  ArcRotateCamera,
+  CircleEase,
+  Color4,
+  EasingFunction,
+  Engine,
+  Light,
+  Scene,
+  Animation,
+  Vector3,
+} from '@babylonjs/core';
 import Kotatsu from './kotatsu';
 
 export default class Motion {
   clearColorIndex: number;
+  fps: number;
+  easeOutFunction: CircleEase;
   hemiLight: Light;
 
   constructor(
@@ -12,12 +24,20 @@ export default class Motion {
     public engine: Engine
   ) {
     this.clearColorIndex = 0;
+    this.fps = 60;
+
+    this.easeOutFunction = new CircleEase();
+    this.easeOutFunction.setEasingMode(EasingFunction.EASINGMODE_EASEOUT);
+
     this.hemiLight = this.scene.getLightByName('hemiLight');
 
     window.addEventListener('keydown', (e) => {
       console.log(e);
       if (e.code === 'Digit1') {
         this.changeClearColor();
+      }
+      if (e.code === 'Digit2') {
+        this.rotateAndScaleKotatsu();
       }
     });
   }
@@ -43,5 +63,37 @@ export default class Motion {
     if (this.clearColorIndex >= colors.length) {
       this.clearColorIndex = 0;
     }
+  }
+
+  rotateAndScaleKotatsu() {
+    const target = this.kotatsu.root;
+    Animation.CreateAndStartAnimation(
+      'rotateKotatsu',
+      target,
+      'rotation',
+      this.fps,
+      20,
+      target.rotation,
+      this._randomVector3(),
+      0,
+      this.easeOutFunction
+    );
+
+    const randomScale = Math.random() * 2 + 0.1;
+    Animation.CreateAndStartAnimation(
+      'scaleKotatsu',
+      target,
+      'scaling',
+      this.fps,
+      20,
+      target.scaling,
+      new Vector3(randomScale, randomScale, randomScale),
+      0,
+      this.easeOutFunction
+    );
+  }
+
+  private _randomVector3() {
+    return new Vector3(Math.random() * 2, Math.random() * 2, Math.random() * 2);
   }
 }
