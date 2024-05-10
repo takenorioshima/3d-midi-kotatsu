@@ -1,7 +1,8 @@
-// import "@babylonjs/core/Debug/debugLayer";
-// import "@babylonjs/inspector";
-import { Engine, Scene, SceneLoader, ArcRotateCamera, Vector3, HemisphericLight, Mesh, MeshBuilder, Color4 } from "@babylonjs/core";
+import "@babylonjs/core/Debug/debugLayer";
+import "@babylonjs/inspector";
+import { Engine, Scene, ArcRotateCamera, Vector3, HemisphericLight, Color4 } from "@babylonjs/core";
 import '@babylonjs/loaders/glTF';
+import Kotatsu from './kotatsu';
 
 class App {
   constructor() {
@@ -34,12 +35,7 @@ class App {
     });
 
     // Load model.
-    SceneLoader.ImportMeshAsync('', "./models/", "kotatsu.glb", scene)
-      .then((result) => {
-        const kotatsu = result.meshes[0];
-        kotatsu.scaling = new Vector3(1, 1, 1);
-      })
-      .catch(console.error);
+    const kotatsu = new Kotatsu(scene);
 
     // Keep aspect ratio on window resize.
     window.addEventListener("resize", function () {
