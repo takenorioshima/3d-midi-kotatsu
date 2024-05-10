@@ -82,7 +82,7 @@ export default class Motion {
       this.easeOutFunction
     );
 
-    const randomScale = Math.random() * 2 + 0.1;
+    const randomScale = Math.random() + Math.random() * 2;
     Animation.CreateAndStartAnimation(
       'scaleKotatsu',
       target,
