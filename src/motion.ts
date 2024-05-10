@@ -39,6 +39,9 @@ export default class Motion {
       if (e.code === 'Digit2') {
         this.rotateAndScaleKotatsu();
       }
+      if (e.code === 'Digit3') {
+        this.heatKotatsu();
+      }
     });
   }
 
@@ -90,6 +93,22 @@ export default class Motion {
       new Vector3(randomScale, randomScale, randomScale),
       0,
       this.easeOutFunction
+    );
+  }
+
+  heatKotatsu() {
+    const target = this.kotatsu.heaterLight;
+    const intensityFrom = Math.random() * 15 + 30;
+    console.log(intensityFrom);
+    Animation.CreateAndStartAnimation(
+      'heatKotatsu',
+      target,
+      'intensity',
+      this.fps,
+      10,
+      intensityFrom,
+      1,
+      0
     );
   }
 
