@@ -10,7 +10,7 @@ import {
 } from '@babylonjs/core';
 import '@babylonjs/loaders/glTF';
 import Kotatsu from './kotatsu';
-import Animation from './animation';
+import Motion from './motion';
 
 class App {
   constructor() {
@@ -57,7 +57,7 @@ class App {
     const kotatsu = new Kotatsu(scene);
 
     // Load animations.
-    const animation = new Animation(kotatsu, scene, camera, engine);
+    const motion = new Motion(kotatsu, scene, camera, engine);
 
     // Keep aspect ratio on window resize.
     window.addEventListener('resize', function () {

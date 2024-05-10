@@ -1,7 +1,7 @@
 import { ArcRotateCamera, Color4, Engine, Light, Scene } from '@babylonjs/core';
 import Kotatsu from './kotatsu';
 
-export default class Animation {
+export default class Motion {
   clearColorIndex: number;
   hemiLight: Light;
 
