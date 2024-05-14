@@ -58,7 +58,7 @@ export default class Motion {
         this.changeMaterials(true);
       }
       if (e.code === 'Digit8') {
-        this.bounce(true);
+        this.bounce();
       }
     });
   }
@@ -136,12 +136,12 @@ export default class Motion {
       this.kotatsu.root.metadata.isShuffled = true;
     }
     this._moveScaleAndRotate(this.kotatsu.futon, reset);
-    this._moveScaleAndRotate(this.kotatsu.tableTop, reset);
+    this._moveScaleAndRotate(this.kotatsu.tabletop, reset);
     this._moveScaleAndRotate(this.kotatsu.tableBase, reset);
   }
 
   rotateTabletop() {
-    const target = this.kotatsu.tableTop;
+    const target = this.kotatsu.tabletop;
     const rotationTo = target.metadata.isRotated ? 0 : Math.PI * 3;
     const presentScale = target.scaling.x;
     const scaleFrom = new Vector3(

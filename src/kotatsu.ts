@@ -15,7 +15,7 @@ export default class Kotatsu extends AbstractMesh {
   isLoaded: boolean;
 
   root: AbstractMesh;
-  tableTop: TransformNode;
+  tabletop: TransformNode;
   tableBase: AbstractMesh;
   futon: AbstractMesh;
   heater: AbstractMesh;
@@ -39,13 +39,13 @@ export default class Kotatsu extends AbstractMesh {
         };
 
         // Tabletop
-        this.tableTop = new TransformNode('tableTop');
-        this.tableTop.metadata = { isRotated: false };
-        this.tableTop.parent = this.root;
-        const tableTopBase = scene.getMeshByName('tableTopBase');
-        const tableTopPicture = scene.getMeshByName('tableTopPicture');
-        tableTopBase.parent = this.tableTop;
-        tableTopPicture.parent = this.tableTop;
+        this.tabletop = new TransformNode('tabletop');
+        this.tabletop.metadata = { isRotated: false };
+        this.tabletop.parent = this.root;
+        const tabletopBase = scene.getMeshByName('tabletopBase');
+        const tabletopPicture = scene.getMeshByName('tabletopPicture');
+        tabletopBase.parent = this.tabletop;
+        tabletopPicture.parent = this.tabletop;
 
         // Futon
         this.futon = scene.getMeshByName('futon');
