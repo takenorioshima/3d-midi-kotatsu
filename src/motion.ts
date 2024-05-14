@@ -57,6 +57,9 @@ export default class Motion {
       if (e.code === 'Digit7') {
         this.changeMaterials(true);
       }
+      if (e.code === 'Digit8') {
+        this.bounce(true);
+      }
     });
   }
 
@@ -167,6 +170,18 @@ export default class Motion {
         root.metadata.isNormalMaterial = false;
       });
     }
+  }
+
+  bounce() {
+    const root = this.kotatsu.root;
+    this._animate(
+      'bounce',
+      root,
+      'scaling',
+      15,
+      new Vector3(1.2, 1.2, 1.2),
+      Vector3.One
+    );
   }
 
   private _animate(
