@@ -11,6 +11,7 @@ import {
   AbstractMesh,
   TransformNode,
 } from '@babylonjs/core';
+import { NormalMaterial } from '@babylonjs/materials';
 import Kotatsu from './kotatsu';
 
 export default class Motion {
@@ -49,6 +50,9 @@ export default class Motion {
       }
       if (e.code === 'Digit5') {
         this.rotateTabletop();
+      }
+      if (e.code === 'Digit6') {
+        this.changeMaterial();
       }
     });
   }
@@ -129,6 +133,22 @@ export default class Motion {
       target.rotation.y,
       rotation_to
     );
+  }
+
+  changeMaterial() {
+    const root = this.kotatsu.root;
+    const childMeshes = root.getChildMeshes();
+    if (!root.metadata.isNormalMaterial) {
+      childMeshes.forEach((mesh) => {
+        mesh.material = new NormalMaterial('normalMaterial', this.scene);
+        root.metadata.isNormalMaterial = true;
+      });
+    } else {
+      childMeshes.forEach((mesh) => {
+        mesh.material = mesh.metadata.initialMaterial;
+        root.metadata.isNormalMaterial = false;
+      });
+    }
   }
 
   private _animate(
