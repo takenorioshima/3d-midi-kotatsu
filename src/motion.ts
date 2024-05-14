@@ -40,7 +40,7 @@ export default class Motion {
         this.changeClearColor();
       }
       if (e.code === 'Digit2') {
-        this.rotateAndScaleKotatsu();
+        this.changeCameraPosition();
       }
       if (e.code === 'Digit3') {
         this.heatKotatsu();
@@ -83,25 +83,38 @@ export default class Motion {
     }
   }
 
-  rotateAndScaleKotatsu() {
-    const target = this.kotatsu.root;
+  changeCameraPosition() {
+    const camera = this.camera;
+    const alpha = Math.random() * Math.PI * 2;
+    const beta = Math.random() * Math.PI;
+    const radius = Math.random() * 3 + 4;
+
     this._animate(
-      'rotateKotatsu',
-      target,
-      'rotation',
+      'changeCameraPositionAlpha',
+      camera,
+      'alpha',
       20,
-      target.rotation,
-      this._randomVector3()
+      camera.alpha,
+      alpha
     );
 
-    const randomScale = Math.random() + Math.random() * 2;
     this._animate(
-      'scaleKotatsu',
-      target,
-      'scaling',
+      'changeCameraPositionBeta',
+      camera,
+      'beta',
       20,
-      target.scaling,
-      new Vector3(randomScale, randomScale, randomScale)
+      camera.beta,
+      beta
+    );
+
+    console.log(camera.radius);
+    this._animate(
+      'changeCameraPositionRadius',
+      camera,
+      'radius',
+      20,
+      camera.radius,
+      radius
     );
   }
 
