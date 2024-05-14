@@ -35,6 +35,7 @@ export default class Kotatsu extends AbstractMesh {
         this.root.scaling = Vector3.One();
         this.root.metadata = {
           isShuffled: false,
+          isNormalMaterial: false,
         };
 
         // Tabletop
@@ -99,6 +100,14 @@ export default class Kotatsu extends AbstractMesh {
         this.spotLight.intensity = 40;
         this.spotLight.parent = this.root;
         this.spotLight.setEnabled(false);
+
+        // Set initial material.
+        const childMeshes = this.root.getChildMeshes();
+        childMeshes.forEach((mesh) => {
+          mesh.metadata = {
+            initialMaterial: mesh.material.clone('initialMaterial'),
+          };
+        });
       })
       .catch(console.error);
   }

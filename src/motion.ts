@@ -11,6 +11,7 @@ import {
   AbstractMesh,
   TransformNode,
 } from '@babylonjs/core';
+import { NormalMaterial } from '@babylonjs/materials';
 import Kotatsu from './kotatsu';
 
 export default class Motion {
@@ -39,7 +40,7 @@ export default class Motion {
         this.changeClearColor();
       }
       if (e.code === 'Digit2') {
-        this.rotateAndScaleKotatsu();
+        this.changeCameraPosition();
       }
       if (e.code === 'Digit3') {
         this.heatKotatsu();
@@ -49,6 +50,15 @@ export default class Motion {
       }
       if (e.code === 'Digit5') {
         this.rotateTabletop();
+      }
+      if (e.code === 'Digit6') {
+        this.changeMaterials();
+      }
+      if (e.code === 'Digit7') {
+        this.changeMaterials(true);
+      }
+      if (e.code === 'Digit8') {
+        this.bounce(true);
       }
     });
   }
@@ -76,25 +86,38 @@ export default class Motion {
     }
   }
 
-  rotateAndScaleKotatsu() {
-    const target = this.kotatsu.root;
+  changeCameraPosition() {
+    const camera = this.camera;
+    const alpha = Math.random() * Math.PI * 2;
+    const beta = Math.random() * Math.PI;
+    const radius = Math.random() * 3 + 4;
+
     this._animate(
-      'rotateKotatsu',
-      target,
-      'rotation',
+      'changeCameraPositionAlpha',
+      camera,
+      'alpha',
       20,
-      target.rotation,
-      this._randomVector3()
+      camera.alpha,
+      alpha
     );
 
-    const randomScale = Math.random() + Math.random() * 2;
     this._animate(
-      'scaleKotatsu',
-      target,
-      'scaling',
+      'changeCameraPositionBeta',
+      camera,
+      'beta',
       20,
-      target.scaling,
-      new Vector3(randomScale, randomScale, randomScale)
+      camera.beta,
+      beta
+    );
+
+    console.log(camera.radius);
+    this._animate(
+      'changeCameraPositionRadius',
+      camera,
+      'radius',
+      20,
+      camera.radius,
+      radius
     );
   }
 
@@ -119,7 +142,13 @@ export default class Motion {
 
   rotateTabletop() {
     const target = this.kotatsu.tableTop;
-    const rotation_to = target.metadata.isRotated ? 0 : Math.PI * 3;
+    const rotationTo = target.metadata.isRotated ? 0 : Math.PI * 3;
+    const presentScale = target.scaling.x;
+    const scaleFrom = new Vector3(
+      presentScale * 1.4,
+      presentScale * 1.4,
+      presentScale * 1.4
+    );
     target.metadata.isRotated = !target.metadata.isRotated;
     this._animate(
       'rotation',
@@ -127,7 +156,45 @@ export default class Motion {
       'rotation.y',
       15,
       target.rotation.y,
-      rotation_to
+      rotationTo
+    );
+    this._animate(
+      'scaling',
+      target,
+      'scaling',
+      15,
+      scaleFrom,
+      new Vector3(presentScale, presentScale, presentScale)
+    );
+  }
+
+  changeMaterials(wireframe: boolean = false) {
+    const root = this.kotatsu.root;
+    const childMeshes = root.getChildMeshes();
+    if (!root.metadata.isNormalMaterial) {
+      childMeshes.forEach((mesh) => {
+        mesh.material = new NormalMaterial('normalMaterial', this.scene);
+        mesh.material.wireframe = wireframe ? true : false;
+        root.metadata.isNormalMaterial = true;
+      });
+    } else {
+      childMeshes.forEach((mesh) => {
+        mesh.material = mesh.metadata.initialMaterial;
+        mesh.material.wireframe = false;
+        root.metadata.isNormalMaterial = false;
+      });
+    }
+  }
+
+  bounce() {
+    const root = this.kotatsu.root;
+    this._animate(
+      'bounce',
+      root,
+      'scaling',
+      15,
+      new Vector3(1.2, 1.2, 1.2),
+      Vector3.One
     );
   }
 
