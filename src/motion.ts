@@ -52,7 +52,10 @@ export default class Motion {
         this.rotateTabletop();
       }
       if (e.code === 'Digit6') {
-        this.changeMaterial();
+        this.changeMaterials();
+      }
+      if (e.code === 'Digit7') {
+        this.changeMaterials(true);
       }
     });
   }
@@ -135,17 +138,19 @@ export default class Motion {
     );
   }
 
-  changeMaterial() {
+  changeMaterials(wireframe: boolean = false) {
     const root = this.kotatsu.root;
     const childMeshes = root.getChildMeshes();
     if (!root.metadata.isNormalMaterial) {
       childMeshes.forEach((mesh) => {
         mesh.material = new NormalMaterial('normalMaterial', this.scene);
+        mesh.material.wireframe = wireframe ? true : false;
         root.metadata.isNormalMaterial = true;
       });
     } else {
       childMeshes.forEach((mesh) => {
         mesh.material = mesh.metadata.initialMaterial;
+        mesh.material.wireframe = false;
         root.metadata.isNormalMaterial = false;
       });
     }
