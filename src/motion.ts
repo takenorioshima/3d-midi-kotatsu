@@ -142,7 +142,13 @@ export default class Motion {
 
   rotateTabletop() {
     const target = this.kotatsu.tableTop;
-    const rotation_to = target.metadata.isRotated ? 0 : Math.PI * 3;
+    const rotationTo = target.metadata.isRotated ? 0 : Math.PI * 3;
+    const presentScale = target.scaling.x;
+    const scaleFrom = new Vector3(
+      presentScale * 1.4,
+      presentScale * 1.4,
+      presentScale * 1.4
+    );
     target.metadata.isRotated = !target.metadata.isRotated;
     this._animate(
       'rotation',
@@ -150,7 +156,15 @@ export default class Motion {
       'rotation.y',
       15,
       target.rotation.y,
-      rotation_to
+      rotationTo
+    );
+    this._animate(
+      'scaling',
+      target,
+      'scaling',
+      15,
+      scaleFrom,
+      new Vector3(presentScale, presentScale, presentScale)
     );
   }
 
