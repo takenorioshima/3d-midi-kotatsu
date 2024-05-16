@@ -233,9 +233,9 @@ export default class Motion {
     target: AbstractMesh | TransformNode,
     reset: boolean = false
   ) {
-    const position_to = reset ? Vector3.Zero() : this._randomVector3(2);
+    const position_to = reset ? Vector3.Zero() : this._randomVector3(0.5);
     const rotation_to = reset ? Vector3.Zero() : this._randomVector3(2);
-    const scaling = Math.random() * 2 + 0.3;
+    const scaling = Math.random() * 1.5 + 0.3;
     const scaling_to = reset
       ? Vector3.One()
       : new Vector3(scaling, scaling, scaling);
