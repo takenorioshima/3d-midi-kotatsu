@@ -97,9 +97,11 @@ class App {
               motion.changeMaterials(true);
           }
         }, 800);
+        autoPlayButton.textContent = '⏸︎';
         isAutoPlay = true;
       } else {
         clearInterval(intervalId);
+        autoPlayButton.textContent = '⏵︎';
         isAutoPlay = false;
       }
     });
