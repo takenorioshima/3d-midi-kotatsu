@@ -33,7 +33,6 @@ export default class Motion {
     this.easeOutFunction.setEasingMode(EasingFunction.EASINGMODE_EASEOUT);
 
     this.hemiLight = this.scene.getLightByName('hemiLight');
-
     window.addEventListener('keydown', (e) => {
       console.log(e);
       if (e.code === 'Digit1') {
@@ -59,6 +58,9 @@ export default class Motion {
       }
       if (e.code === 'Digit8') {
         this.bounce();
+      }
+      if (e.code === 'Escape') {
+        this.reset();
       }
     });
   }
@@ -196,6 +198,58 @@ export default class Motion {
       new Vector3(1.2, 1.2, 1.2),
       Vector3.One
     );
+  }
+
+  reset() {
+    // Reset Kotatsu positions and rotations.
+    this._moveScaleAndRotate(this.kotatsu.futon, true);
+    this._moveScaleAndRotate(this.kotatsu.tabletop, true);
+    this._moveScaleAndRotate(this.kotatsu.tableBase, true);
+
+    // Reset camera.
+    const camera = this.camera;
+    const alpha = Math.PI * 2;
+    const beta = -Math.PI;
+    const radius = 6;
+
+    this._animate(
+      'changeCameraPositionAlpha',
+      camera,
+      'alpha',
+      20,
+      camera.alpha,
+      alpha
+    );
+
+    this._animate(
+      'changeCameraPositionBeta',
+      camera,
+      'beta',
+      20,
+      camera.beta,
+      beta
+    );
+
+    this._animate(
+      'changeCameraPositionRadius',
+      camera,
+      'radius',
+      20,
+      camera.radius,
+      radius
+    );
+
+    // Reset materials.
+    const root = this.kotatsu.root;
+    const childMeshes = root.getChildMeshes();
+    childMeshes.forEach((mesh) => {
+      mesh.material = mesh.metadata.initialMaterial;
+      mesh.material.wireframe = false;
+    });
+
+    // Reset animation flags.
+    root.metadata.isNormalMaterial = false;
+    root.metadata.isShuffled = false;
   }
 
   private _animate(
