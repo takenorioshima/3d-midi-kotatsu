@@ -35,6 +35,7 @@ class App {
       Vector3.Zero(),
       scene
     );
+    camera.fov = 0.3;
     camera.attachControl(canvas, true);
     var hemiLight: HemisphericLight = new HemisphericLight(
       'hemiLight',

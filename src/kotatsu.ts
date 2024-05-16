@@ -1,7 +1,6 @@
 import {
   AbstractMesh,
   Color3,
-  Light,
   PointLight,
   Scene,
   SceneLoader,
@@ -80,7 +79,7 @@ export default class Kotatsu extends AbstractMesh {
         // Heater Light
         this.heaterLight = new PointLight(
           'heaterLight',
-          new Vector3(0, 0.3, 0),
+          new Vector3(0, 0.15, 0),
           scene
         );
         this.heaterLight.diffuse = new Color3(1, 0, 0);
@@ -90,14 +89,14 @@ export default class Kotatsu extends AbstractMesh {
         // Spot light
         this.spotLight = new SpotLight(
           'spotLight',
-          new Vector3(0, 5, 1),
+          new Vector3(0, 3, 0.7),
           new Vector3(0, -1, -0.25),
           Math.PI / 3,
           2,
           scene
         );
-        this.spotLight.diffuse = new Color3(0.4, 0.5, 0.8);
-        this.spotLight.intensity = 40;
+        this.spotLight.diffuse = new Color3(0.4, 0.4, 0.7);
+        this.spotLight.intensity = 50;
         this.spotLight.parent = this.root;
         this.spotLight.setEnabled(false);
 
