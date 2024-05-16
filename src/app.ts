@@ -25,6 +25,7 @@ class App {
     var engine = new Engine(canvas, true);
     var scene = new Scene(engine);
     scene.clearColor = Color4.FromHexString('#ffcc00');
+    scene.useRightHandedSystem = true;
 
     const camera = new ArcRotateCamera(
       'camera',
