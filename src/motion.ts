@@ -46,6 +46,8 @@ export default class Motion {
           const numberOfAnimations = 8;
           const group = e.note.number % numberOfAnimations;
 
+          this.velocityToScale(e.note.attack);
+
           switch (group) {
             case 0:
               this.changeClearColor();
@@ -69,12 +71,11 @@ export default class Motion {
               this.changeMaterials(true);
               break;
             case 7:
-              this.bounce();
-              break;
-            case 8:
               this.reset();
-              break;
           }
+        });
+        input.addListener('noteoff', (e) => {
+          this.velocityToScale(0);
         });
       })
       .catch((err) => alert(err));
@@ -298,6 +299,19 @@ export default class Motion {
     // Reset animation flags.
     root.metadata.isNormalMaterial = false;
     root.metadata.isShuffled = false;
+  }
+
+  velocityToScale(velocity: number) {
+    const target = this.kotatsu.root;
+    const scalingTo = new Vector3(1 + velocity, 1 + velocity, 1 + velocity);
+    this._animate(
+      'velocityToScale',
+      target,
+      'scaling',
+      10,
+      target.scaling,
+      scalingTo
+    );
   }
 
   private _animate(
