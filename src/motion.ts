@@ -276,49 +276,14 @@ export default class Motion {
     );
   }
 
-  private _moveScaleAndRotate(
-    target: AbstractMesh | TransformNode,
-    reset: boolean = false
-  ) {
-    const position_to = reset ? Vector3.Zero() : this._randomVector3(0.5);
-    const rotation_to = reset ? Vector3.Zero() : this._randomVector3(2);
+  private _moveScaleAndRotate(target: AbstractMesh | TransformNode, reset: boolean = false) {
+    const positionTo = reset ? Vector3.Zero() : this._randomVector3(0.5);
+    const rotationTo = reset ? Vector3.Zero() : this._randomVector3(2);
     const scaling = Math.random() * 1.5 + 0.3;
-    const scaling_to = reset
-      ? Vector3.One()
-      : new Vector3(scaling, scaling, scaling);
+    const scalingTo = reset ? Vector3.One() : new Vector3(scaling, scaling, scaling);
 
-    Animation.CreateAndStartAnimation(
-      'position',
-      target,
-      'position',
-      this.fps,
-      20,
-      target.position,
-      position_to,
-      0,
-      this.easeOutFunction
-    );
-    Animation.CreateAndStartAnimation(
-      'rotation',
-      target,
-      'rotation',
-      this.fps,
-      20,
-      target.rotation,
-      rotation_to,
-      0,
-      this.easeOutFunction
-    );
-    Animation.CreateAndStartAnimation(
-      'scaling',
-      target,
-      'scaling',
-      this.fps,
-      20,
-      target.scaling,
-      scaling_to,
-      0,
-      this.easeOutFunction
-    );
+    this._animate('position', target, 'position', 20, target.position, positionTo);
+    this._animate('rotation', target, 'rotation', 20, target.rotation, rotationTo);
+    this._animate('scaling', target, 'scaling', 20, target.scaling, scalingTo);
   }
 }
