@@ -23,8 +23,18 @@ __metadata:
     gltf-pipeline: ^4.1.0
     typescript: ^5.4.5
     vite: ^5.2.11
+    webmidi: ^3.1.9
   languageName: unknown
   linkType: soft
+
+"@babel/runtime@npm:^7.20.6":
+  version: 7.24.5
+  resolution: "@babel/runtime@npm:7.24.5"
+  dependencies:
+    regenerator-runtime: ^0.14.0
+  checksum: 755383192f3ac32ba4c62bd4f1ae92aed5b82d2c6665f39eb28fa94546777cf5c63493ea92dd03f1c2e621b17e860f190c056684b7f234270fdc91e29beda063
+  languageName: node
+  linkType: hard
 
 "@babylonjs/core@npm:^7.5.0":
   version: 7.5.0
@@ -612,6 +622,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/webmidi@npm:^2.0.10":
+  version: 2.0.10
+  resolution: "@types/webmidi@npm:2.0.10"
+  checksum: 97ad74d9a1a5865e00f4e4f137aeb6de62493dd6c9ed69c3e63a15a4cb40b596e205200b0c534bf303183863f12cefdcb27a40b69b4f65b21f2df00e3f1cf85a
+  languageName: node
+  linkType: hard
+
 "@zip.js/zip.js@npm:^2.7.34":
   version: 2.7.44
   resolution: "@zip.js/zip.js@npm:2.7.44"
@@ -880,6 +897,15 @@ __metadata:
     supports-color:
       optional: true
   checksum: 3dbad3f94ea64f34431a9cbf0bafb61853eda57bff2880036153438f50fb5a84f27683ba0d8e5426bf41a8c6ff03879488120cf5b3a761e77953169c0600a708
+  languageName: node
+  linkType: hard
+
+"djipevents@npm:^2.0.7":
+  version: 2.0.7
+  resolution: "djipevents@npm:2.0.7"
+  dependencies:
+    "@babel/runtime": ^7.20.6
+  checksum: 116cb97ac799b8830899369cf64fc2baf5cc0f759ed6d4bdaebff7973a2869a809c1ab090bd3de5eeeeea4c66bff5471ef62c5903b1b2759c4917ce82f35d950
   languageName: node
   linkType: hard
 
@@ -1376,6 +1402,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"jazz-midi@npm:^1.7.9":
+  version: 1.7.9
+  resolution: "jazz-midi@npm:1.7.9"
+  checksum: 4056bc430c4181a3d7812a365ec73e1e2719c4daf91fbfee7bf863a2e05eacf75f8b9ab1be970a82c58ce7712fcb9bfe6240609d0f023e45a471003941937491
+  languageName: node
+  linkType: hard
+
 "jsbn@npm:1.1.0":
   version: 1.1.0
   resolution: "jsbn@npm:1.1.0"
@@ -1400,6 +1433,16 @@ __metadata:
     graceful-fs:
       optional: true
   checksum: 7af3b8e1ac8fe7f1eccc6263c6ca14e1966fcbc74b618d3c78a0a2075579487547b94f72b7a1114e844a1e15bb00d440e5d1720bfc4612d790a6f285d5ea8354
+  languageName: node
+  linkType: hard
+
+"jzz@npm:^1.5.6":
+  version: 1.8.4
+  resolution: "jzz@npm:1.8.4"
+  dependencies:
+    "@types/webmidi": ^2.0.10
+    jazz-midi: ^1.7.9
+  checksum: b27fca729b76a10da7a42f79cc8f6fd96b019c932ef08fa03204da7a67da9299ae722206b0d2a139d5c0abc2338cd8f8cb1c4d92fa8e50e7df3a7b47f3936cbe
   languageName: node
   linkType: hard
 
@@ -1876,6 +1919,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"regenerator-runtime@npm:^0.14.0":
+  version: 0.14.1
+  resolution: "regenerator-runtime@npm:0.14.1"
+  checksum: 9f57c93277b5585d3c83b0cf76be47b473ae8c6d9142a46ce8b0291a04bb2cf902059f0f8445dcabb3fb7378e5fe4bb4ea1e008876343d42e46d3b484534ce38
+  languageName: node
+  linkType: hard
+
 "require-directory@npm:^2.1.1":
   version: 2.1.1
   resolution: "require-directory@npm:2.1.1"
@@ -2240,6 +2290,19 @@ __metadata:
   bin:
     vite: bin/vite.js
   checksum: 3f9f976cc6ada93aca56abcc683a140e807725b351abc241a1ec0763ec561a4bf5760e1ad94de4e59505904ddaa88727de66af02f61ecf540c7720045de55d0a
+  languageName: node
+  linkType: hard
+
+"webmidi@npm:^3.1.9":
+  version: 3.1.9
+  resolution: "webmidi@npm:3.1.9"
+  dependencies:
+    djipevents: ^2.0.7
+    jzz: ^1.5.6
+  dependenciesMeta:
+    jzz:
+      optional: true
+  checksum: a032f6243c0a7e9de2037df4fdb1ebea5dfced5001fab9f9d7c2782787811a94eeb1a6dbb362ece5e1c90a486dd2e936cd042285b1f7f8d665fc4414eb722e0f
   languageName: node
   linkType: hard
 
