@@ -74,8 +74,14 @@ export default class Motion {
               this.reset();
           }
         });
+
         input.addListener('noteoff', (e) => {
           this.velocityToScale(0);
+        });
+
+        input.addListener('controlchange', (e) => {
+          console.log(e.value);
+          this.floatFuton(e.value);
         });
       })
       .catch((err) => alert(err));
@@ -312,6 +318,17 @@ export default class Motion {
       target.scaling,
       scalingTo
     );
+  }
+
+  floatFuton(value: number | boolean) {
+    const tabletop = this.kotatsu.tabletop;
+    const tableBase = this.kotatsu.tableBase;
+    const futon = this.kotatsu.futon;
+    if (typeof value === 'number') {
+      tabletop.position.y = value / 2;
+      tableBase.position.y = -value / 2;
+      futon.rotation = new Vector3(0, (Math.PI * value) / 2, 0);
+    }
   }
 
   private _animate(
