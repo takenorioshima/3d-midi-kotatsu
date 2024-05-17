@@ -10,6 +10,7 @@ import {
 } from '@babylonjs/core';
 import '@babylonjs/loaders/glTF';
 import Kotatsu from './kotatsu';
+import Controller from './controller';
 import Motion from './motion';
 
 class App {
@@ -58,8 +59,11 @@ class App {
     // Load model.
     const kotatsu = new Kotatsu(scene);
 
+    // Load controller.
+    const controller = new Controller(kotatsu, scene, camera, engine);
+
     // Load animations.
-    const motion = new Motion(kotatsu, scene, camera, engine);
+    // const motion = new Motion(kotatsu, scene, camera, engine);
 
     // Keep aspect ratio on window resize.
     window.addEventListener('resize', function () {
@@ -73,37 +77,9 @@ class App {
     });
 
     // Auto play function.
-    let isAutoPlay = false;
     const autoPlayButton = document.querySelector('.js-auto-play-button');
-    let intervalId;
-    autoPlayButton.addEventListener('click', (_e) => {
-      if (!isAutoPlay) {
-        intervalId = setInterval(() => {
-          motion.heatKotatsu();
-          motion.bounce();
-          motion.changeClearColor();
-
-          const dice = Math.floor(Math.random() * 5);
-          switch (dice) {
-            case 0:
-              motion.changeCameraPosition();
-            case 1:
-              motion.shuffleComponents();
-            case 2:
-              motion.rotateTabletop();
-            case 3:
-              motion.changeMaterials();
-            case 4:
-              motion.changeMaterials(true);
-          }
-        }, 800);
-        autoPlayButton.textContent = '⏸︎';
-        isAutoPlay = true;
-      } else {
-        clearInterval(intervalId);
-        autoPlayButton.textContent = '⏵︎';
-        isAutoPlay = false;
-      }
+    autoPlayButton.addEventListener('click', (e) => {
+      controller.autoPlay(e.target as HTMLElement);
     });
   }
 }

@@ -13,7 +13,6 @@ import {
 } from '@babylonjs/core';
 import { NormalMaterial } from '@babylonjs/materials';
 import Kotatsu from './kotatsu';
-import { WebMidi } from 'webmidi';
 
 export default class Motion {
   clearColorIndex: number;
@@ -34,92 +33,6 @@ export default class Motion {
     this.easeOutFunction.setEasingMode(EasingFunction.EASINGMODE_EASEOUT);
 
     this.hemiLight = this.scene.getLightByName('hemiLight');
-
-    WebMidi.enable()
-      .then(() => {
-        const input = WebMidi.inputs[0];
-        console.log(
-          `[WebMidi] ${input.manufacturer} ${input.name} was detected.`
-        );
-
-        input.addListener('noteon', (e) => {
-          const numberOfAnimations = 8;
-          const group = e.note.number % numberOfAnimations;
-
-          this.velocityToScale(e.note.attack);
-
-          switch (group) {
-            case 0:
-              this.changeClearColor();
-              break;
-            case 1:
-              this.changeCameraPosition();
-              break;
-            case 2:
-              this.heatKotatsu();
-              break;
-            case 3:
-              this.shuffleComponents();
-              break;
-            case 4:
-              this.rotateTabletop();
-              break;
-            case 5:
-              this.changeMaterials();
-              break;
-            case 6:
-              this.changeMaterials(true);
-              break;
-            case 7:
-              this.reset();
-          }
-        });
-
-        input.addListener('noteoff', (_e) => {
-          this.velocityToScale(0);
-        });
-
-        input.addListener('controlchange', (e) => {
-          this.floatFuton(e.value);
-        });
-
-        input.addListener('pitchbend', (e) => {
-          this.moveCameraBeta(e.value);
-        });
-      })
-      .catch((err) => alert(err));
-
-    window.addEventListener('keydown', (e) => {
-      console.log(e);
-      switch (e.code) {
-        case 'Digit1':
-          this.changeClearColor();
-          break;
-        case 'Digit2':
-          this.changeCameraPosition();
-          break;
-        case 'Digit3':
-          this.heatKotatsu();
-          break;
-        case 'Digit4':
-          this.shuffleComponents();
-          break;
-        case 'Digit5':
-          this.rotateTabletop();
-          break;
-        case 'Digit6':
-          this.changeMaterials();
-          break;
-        case 'Digit7':
-          this.changeMaterials(true);
-          break;
-        case 'Digit8':
-          this.bounce();
-          break;
-        case 'Escape':
-          this.reset();
-      }
-    });
   }
 
   changeClearColor() {
