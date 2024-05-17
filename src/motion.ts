@@ -20,12 +20,7 @@ export default class Motion {
   easeOutFunction: CircleEase;
   hemiLight: Light;
 
-  constructor(
-    public kotatsu: Kotatsu,
-    public scene: Scene,
-    public camera: ArcRotateCamera,
-    public engine: Engine
-  ) {
+  constructor(public kotatsu: Kotatsu, public scene: Scene, public camera: ArcRotateCamera, public engine: Engine) {
     this.clearColorIndex = 0;
     this.fps = 60;
 
@@ -36,14 +31,7 @@ export default class Motion {
   }
 
   changeClearColor() {
-    const colors = [
-      '#33BF4F',
-      '#DC4829',
-      '#FFD000',
-      '#2D94CE',
-      '#B7BC9B',
-      '#000000',
-    ];
+    const colors = ['#33BF4F', '#DC4829', '#FFD000', '#2D94CE', '#B7BC9B', '#000000'];
     this.scene.clearColor = Color4.FromHexString(colors[this.clearColorIndex]);
     if (this.clearColorIndex === 5) {
       this.hemiLight.intensity = 0.05;
@@ -68,14 +56,7 @@ export default class Motion {
 
     this._animate('moveCameraBeta', camera, 'beta', 20, camera.beta, beta);
 
-    this._animate(
-      'moveCameraRadius',
-      camera,
-      'radius',
-      20,
-      camera.radius,
-      radius
-    );
+    this._animate('moveCameraRadius', camera, 'radius', 20, camera.radius, radius);
   }
 
   heat() {
@@ -100,32 +81,12 @@ export default class Motion {
   rotateTabletop() {
     const target = this.kotatsu.tabletop;
     const rotationTo = target.metadata.isRotated ? 0 : Math.PI * 3;
-    const presentScale = this.kotatsu.root.metadata.isShuffled
-      ? target.scaling.x
-      : 1;
+    const presentScale = this.kotatsu.root.metadata.isShuffled ? target.scaling.x : 1;
 
-    const scaleFrom = new Vector3(
-      presentScale * 1.4,
-      presentScale * 1.4,
-      presentScale * 1.4
-    );
+    const scaleFrom = new Vector3(presentScale * 1.4, presentScale * 1.4, presentScale * 1.4);
     target.metadata.isRotated = !target.metadata.isRotated;
-    this._animate(
-      'rotation',
-      target,
-      'rotation.y',
-      15,
-      target.rotation.y,
-      rotationTo
-    );
-    this._animate(
-      'scaling',
-      target,
-      'scaling',
-      15,
-      scaleFrom,
-      new Vector3(presentScale, presentScale, presentScale)
-    );
+    this._animate('rotation', target, 'rotation.y', 15, target.rotation.y, rotationTo);
+    this._animate('scaling', target, 'scaling', 15, scaleFrom, new Vector3(presentScale, presentScale, presentScale));
   }
 
   changeMaterials(wireframe: boolean = false) {
@@ -148,14 +109,7 @@ export default class Motion {
 
   bounce() {
     const root = this.kotatsu.root;
-    this._animate(
-      'bounce',
-      root,
-      'scaling',
-      15,
-      new Vector3(1.2, 1.2, 1.2),
-      Vector3.One
-    );
+    this._animate('bounce', root, 'scaling', 15, new Vector3(1.2, 1.2, 1.2), Vector3.One);
   }
 
   reset() {
@@ -174,14 +128,7 @@ export default class Motion {
 
     this._animate('moveCameraBeta', camera, 'beta', 20, camera.beta, beta);
 
-    this._animate(
-      'moveCameraRadius',
-      camera,
-      'radius',
-      20,
-      camera.radius,
-      radius
-    );
+    this._animate('moveCameraRadius', camera, 'radius', 20, camera.radius, radius);
 
     // Reset materials.
     const root = this.kotatsu.root;
@@ -199,14 +146,7 @@ export default class Motion {
   scaleFromVelocity(velocity: number) {
     const target = this.kotatsu.root;
     const scalingTo = new Vector3(1 + velocity, 1 + velocity, 1 + velocity);
-    this._animate(
-      'scaleFromVelocity',
-      target,
-      'scaling',
-      10,
-      target.scaling,
-      scalingTo
-    );
+    this._animate('scaleFromVelocity', target, 'scaling', 10, target.scaling, scalingTo);
   }
 
   floatFuton(value: number | boolean) {
@@ -224,22 +164,13 @@ export default class Motion {
     const camera = this.camera;
     if (typeof value === 'number') {
       if (value === 0) {
-        this._animate(
-          'cameraBeta',
-          camera,
-          'beta',
-          10,
-          camera.beta,
-          Math.PI * 0.25
-        );
+        this._animate('cameraBeta', camera, 'beta', 10, camera.beta, Math.PI * 0.25);
       } else {
         const valueMin = -1;
         const valueMax = 1;
         const rangeMin = 0;
         const rangeMax = 1;
-        const range =
-          ((value - valueMax) * (rangeMax - rangeMin)) / (valueMax - valueMin) +
-          rangeMax;
+        const range = ((value - valueMax) * (rangeMax - rangeMin)) / (valueMax - valueMin) + rangeMax;
         camera.beta = Math.PI * range;
       }
     }
@@ -255,17 +186,7 @@ export default class Motion {
     easingFunction?: CircleEase
   ) {
     easingFunction = easingFunction ? easingFunction : this.easeOutFunction;
-    Animation.CreateAndStartAnimation(
-      name,
-      target,
-      targetProperty,
-      this.fps,
-      totalFrame,
-      from,
-      to,
-      0,
-      easingFunction
-    );
+    Animation.CreateAndStartAnimation(name, target, targetProperty, this.fps, totalFrame, from, to, 0, easingFunction);
   }
 
   private _randomVector3(multiple: number = 2) {
