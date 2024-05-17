@@ -58,32 +58,18 @@ export default class Motion {
     }
   }
 
-  changeCameraPosition() {
+  moveCamera() {
     const camera = this.camera;
     const alpha = Math.random() * Math.PI * 2;
     const beta = Math.random() * Math.PI;
     const radius = Math.random() * 3 + 4;
 
-    this._animate(
-      'changeCameraPositionAlpha',
-      camera,
-      'alpha',
-      20,
-      camera.alpha,
-      alpha
-    );
+    this._animate('moveCameraAlpha', camera, 'alpha', 20, camera.alpha, alpha);
+
+    this._animate('moveCameraBeta', camera, 'beta', 20, camera.beta, beta);
 
     this._animate(
-      'changeCameraPositionBeta',
-      camera,
-      'beta',
-      20,
-      camera.beta,
-      beta
-    );
-
-    this._animate(
-      'changeCameraPositionRadius',
+      'moveCameraRadius',
       camera,
       'radius',
       20,
@@ -92,13 +78,13 @@ export default class Motion {
     );
   }
 
-  heatKotatsu() {
+  heat() {
     const target = this.kotatsu.heaterLight;
     const intensityFrom = Math.random() * 15 + 30;
-    this._animate('heatKotatsu', target, 'intensity', 10, intensityFrom, 1);
+    this._animate('heat', target, 'intensity', 10, intensityFrom, 1);
   }
 
-  shuffleComponents() {
+  dissolve() {
     let reset = false;
     if (this.kotatsu.root.metadata.isShuffled && Math.random() < 0.3) {
       reset = true;
@@ -184,26 +170,12 @@ export default class Motion {
     const beta = -Math.PI;
     const radius = 6;
 
-    this._animate(
-      'changeCameraPositionAlpha',
-      camera,
-      'alpha',
-      20,
-      camera.alpha,
-      alpha
-    );
+    this._animate('moveCameraAlpha', camera, 'alpha', 20, camera.alpha, alpha);
+
+    this._animate('moveCameraBeta', camera, 'beta', 20, camera.beta, beta);
 
     this._animate(
-      'changeCameraPositionBeta',
-      camera,
-      'beta',
-      20,
-      camera.beta,
-      beta
-    );
-
-    this._animate(
-      'changeCameraPositionRadius',
+      'moveCameraRadius',
       camera,
       'radius',
       20,
@@ -224,11 +196,11 @@ export default class Motion {
     root.metadata.isShuffled = false;
   }
 
-  velocityToScale(velocity: number) {
+  scaleFromVelocity(velocity: number) {
     const target = this.kotatsu.root;
     const scalingTo = new Vector3(1 + velocity, 1 + velocity, 1 + velocity);
     this._animate(
-      'velocityToScale',
+      'scaleFromVelocity',
       target,
       'scaling',
       10,

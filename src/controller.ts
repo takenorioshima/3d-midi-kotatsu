@@ -27,20 +27,20 @@ export default class Controller {
           const numberOfAnimations = 8;
           const group = e.note.number % numberOfAnimations;
 
-          this.motion.velocityToScale(e.note.attack);
+          this.motion.scaleFromVelocity(e.note.attack);
 
           switch (group) {
             case 0:
               this.motion.changeClearColor();
               break;
             case 1:
-              this.motion.changeCameraPosition();
+              this.motion.moveCamera();
               break;
             case 2:
-              this.motion.heatKotatsu();
+              this.motion.heat();
               break;
             case 3:
-              this.motion.shuffleComponents();
+              this.motion.dissolve();
               break;
             case 4:
               this.motion.rotateTabletop();
@@ -57,7 +57,7 @@ export default class Controller {
         });
 
         input.addListener('noteoff', (_e) => {
-          this.motion.velocityToScale(0);
+          this.motion.scaleFromVelocity(0);
         });
 
         input.addListener('controlchange', (e) => {
@@ -77,13 +77,13 @@ export default class Controller {
           this.motion.changeClearColor();
           break;
         case 'Digit2':
-          this.motion.changeCameraPosition();
+          this.motion.moveCamera();
           break;
         case 'Digit3':
-          this.motion.heatKotatsu();
+          this.motion.heat();
           break;
         case 'Digit4':
-          this.motion.shuffleComponents();
+          this.motion.dissolve();
           break;
         case 'Digit5':
           this.motion.rotateTabletop();
@@ -108,16 +108,16 @@ export default class Controller {
   autoPlay(autoPlayButton: HTMLElement) {
     if (!this.isAutoPlay) {
       this.intervalId = setInterval(() => {
-        this.motion.heatKotatsu();
+        this.motion.heat();
         this.motion.bounce();
         this.motion.changeClearColor();
 
         const dice = Math.floor(Math.random() * 5);
         switch (dice) {
           case 0:
-            this.motion.changeCameraPosition();
+            this.motion.moveCamera();
           case 1:
-            this.motion.shuffleComponents();
+            this.motion.dissolve();
           case 2:
             this.motion.rotateTabletop();
           case 3:
