@@ -13,6 +13,7 @@ import {
 } from '@babylonjs/core';
 import { NormalMaterial } from '@babylonjs/materials';
 import Kotatsu from './kotatsu';
+import { WebMidi } from 'webmidi';
 
 export default class Motion {
   clearColorIndex: number;
@@ -33,6 +34,51 @@ export default class Motion {
     this.easeOutFunction.setEasingMode(EasingFunction.EASINGMODE_EASEOUT);
 
     this.hemiLight = this.scene.getLightByName('hemiLight');
+
+    WebMidi.enable()
+      .then(() => {
+        const input = WebMidi.inputs[0];
+        console.log(
+          `[WebMidi] ${input.manufacturer} ${input.name} was detected.`
+        );
+
+        input.addListener('noteon', (e) => {
+          const numberOfAnimations = 8;
+          const group = e.note.number % numberOfAnimations;
+
+          switch (group) {
+            case 0:
+              this.changeClearColor();
+              break;
+            case 1:
+              this.changeCameraPosition();
+              break;
+            case 2:
+              this.heatKotatsu();
+              break;
+            case 3:
+              this.shuffleComponents();
+              break;
+            case 4:
+              this.rotateTabletop();
+              break;
+            case 5:
+              this.changeMaterials();
+              break;
+            case 6:
+              this.changeMaterials(true);
+              break;
+            case 7:
+              this.bounce();
+              break;
+            case 8:
+              this.reset();
+              break;
+          }
+        });
+      })
+      .catch((err) => alert(err));
+
     window.addEventListener('keydown', (e) => {
       console.log(e);
       if (e.code === 'Digit1') {
@@ -112,7 +158,6 @@ export default class Motion {
       beta
     );
 
-    console.log(camera.radius);
     this._animate(
       'changeCameraPositionRadius',
       camera,
