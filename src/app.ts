@@ -4,31 +4,30 @@ import { Engine, Scene, ArcRotateCamera, Vector3, HemisphericLight, Color4 } fro
 import '@babylonjs/loaders/glTF';
 import Kotatsu from './kotatsu';
 import Controller from './controller';
-import Motion from './motion';
 
 class App {
   constructor() {
-    // create the canvas html element and attach it to the webpage
-    var canvas = document.createElement('canvas');
+    // Create the canvas html element and attach it to the webpage.
+    const canvas = document.createElement('canvas');
     canvas.style.width = '100%';
     canvas.style.height = '100%';
     canvas.id = 'main-canvas';
     document.body.appendChild(canvas);
 
-    // initialize babylon scene and engine
-    var engine = new Engine(canvas, true);
-    var scene = new Scene(engine);
+    // Initialize babylon scene and engine.
+    const engine = new Engine(canvas, true);
+    const scene = new Scene(engine);
     scene.clearColor = Color4.FromHexString('#ffcc00');
     scene.useRightHandedSystem = true;
 
     const camera = new ArcRotateCamera('camera', Math.PI / 2, Math.PI / 3, 6, Vector3.Zero(), scene);
     camera.fov = 0.3;
     camera.attachControl(canvas, true);
-    var hemiLight: HemisphericLight = new HemisphericLight('hemiLight', new Vector3(1, 1, 0), scene);
+    const hemiLight: HemisphericLight = new HemisphericLight('hemiLight', new Vector3(1, 1, 0), scene);
 
-    // hide/show the Inspector
+    // Hide / show the inspector.
     window.addEventListener('keydown', (ev) => {
-      // Shift+Ctrl+Alt+I
+      // Shift + Ctrl + Alt + I
       if (ev.shiftKey && ev.ctrlKey && ev.altKey && ev.code === 'KeyI') {
         if (scene.debugLayer.isVisible()) {
           scene.debugLayer.hide();
@@ -41,24 +40,21 @@ class App {
     // Load model.
     const kotatsu = new Kotatsu(scene);
 
-    // Load controller.
+    // Initialize controller.
     const controller = new Controller(kotatsu, scene, camera, engine);
-
-    // Load animations.
-    // const motion = new Motion(kotatsu, scene, camera, engine);
 
     // Keep aspect ratio on window resize.
     window.addEventListener('resize', function () {
       engine.resize();
     });
 
-    // run the main render loop
+    // Run the main render loop.
     engine.runRenderLoop(() => {
       scene.render();
       camera.alpha += 0.005;
     });
 
-    // Auto play function.
+    // Add click event for auto play.
     const autoPlayButton = document.querySelector('.js-auto-play-button');
     autoPlayButton.addEventListener('click', (e) => {
       controller.autoPlay(e.target as HTMLElement);
