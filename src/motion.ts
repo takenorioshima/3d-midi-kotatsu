@@ -80,8 +80,11 @@ export default class Motion {
         });
 
         input.addListener('controlchange', (e) => {
-          console.log(e.value);
           this.floatFuton(e.value);
+        });
+
+        input.addListener('pitchbend', (e) => {
+          this.moveCameraBeta(e.value);
         });
       })
       .catch((err) => alert(err));
@@ -328,6 +331,31 @@ export default class Motion {
       tabletop.position.y = value / 2;
       tableBase.position.y = -value / 2;
       futon.rotation = new Vector3(0, (Math.PI * value) / 2, 0);
+    }
+  }
+
+  moveCameraBeta(value: number | boolean) {
+    const camera = this.camera;
+    if (typeof value === 'number') {
+      if (value === 0) {
+        this._animate(
+          'cameraBeta',
+          camera,
+          'beta',
+          10,
+          camera.beta,
+          Math.PI * 0.25
+        );
+      } else {
+        const valueMin = -1;
+        const valueMax = 1;
+        const rangeMin = 0;
+        const rangeMax = 1;
+        const range =
+          ((value - valueMax) * (rangeMax - rangeMin)) / (valueMax - valueMin) +
+          rangeMax;
+        camera.beta = Math.PI * range;
+      }
     }
   }
 
