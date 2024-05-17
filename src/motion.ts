@@ -75,7 +75,7 @@ export default class Motion {
           }
         });
 
-        input.addListener('noteoff', (e) => {
+        input.addListener('noteoff', (_e) => {
           this.velocityToScale(0);
         });
 
@@ -91,32 +91,33 @@ export default class Motion {
 
     window.addEventListener('keydown', (e) => {
       console.log(e);
-      if (e.code === 'Digit1') {
-        this.changeClearColor();
-      }
-      if (e.code === 'Digit2') {
-        this.changeCameraPosition();
-      }
-      if (e.code === 'Digit3') {
-        this.heatKotatsu();
-      }
-      if (e.code === 'Digit4') {
-        this.shuffleComponents();
-      }
-      if (e.code === 'Digit5') {
-        this.rotateTabletop();
-      }
-      if (e.code === 'Digit6') {
-        this.changeMaterials();
-      }
-      if (e.code === 'Digit7') {
-        this.changeMaterials(true);
-      }
-      if (e.code === 'Digit8') {
-        this.bounce();
-      }
-      if (e.code === 'Escape') {
-        this.reset();
+      switch (e.code) {
+        case 'Digit1':
+          this.changeClearColor();
+          break;
+        case 'Digit2':
+          this.changeCameraPosition();
+          break;
+        case 'Digit3':
+          this.heatKotatsu();
+          break;
+        case 'Digit4':
+          this.shuffleComponents();
+          break;
+        case 'Digit5':
+          this.rotateTabletop();
+          break;
+        case 'Digit6':
+          this.changeMaterials();
+          break;
+        case 'Digit7':
+          this.changeMaterials(true);
+          break;
+        case 'Digit8':
+          this.bounce();
+          break;
+        case 'Escape':
+          this.reset();
       }
     });
   }

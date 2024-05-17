@@ -76,7 +76,7 @@ class App {
     let isAutoPlay = false;
     const autoPlayButton = document.querySelector('.js-auto-play-button');
     let intervalId;
-    autoPlayButton.addEventListener('click', (e) => {
+    autoPlayButton.addEventListener('click', (_e) => {
       if (!isAutoPlay) {
         intervalId = setInterval(() => {
           motion.heatKotatsu();
