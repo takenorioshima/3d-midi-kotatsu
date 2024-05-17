@@ -84,9 +84,11 @@ export default class Motion {
     const presentScale = this.kotatsu.root.metadata.isShuffled ? target.scaling.x : 1;
 
     const scaleFrom = new Vector3(presentScale * 1.4, presentScale * 1.4, presentScale * 1.4);
+    const scaleTo = new Vector3(presentScale, presentScale, presentScale);
+
     target.metadata.isRotated = !target.metadata.isRotated;
     this._animate('rotation', target, 'rotation.y', 15, target.rotation.y, rotationTo);
-    this._animate('scaling', target, 'scaling', 15, scaleFrom, new Vector3(presentScale, presentScale, presentScale));
+    this._animate('scaling', target, 'scaling', 15, scaleFrom, scaleTo);
   }
 
   changeMaterials(wireframe: boolean = false) {
