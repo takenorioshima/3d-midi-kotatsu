@@ -1,13 +1,6 @@
 import '@babylonjs/core/Debug/debugLayer';
 import '@babylonjs/inspector';
-import {
-  Engine,
-  Scene,
-  ArcRotateCamera,
-  Vector3,
-  HemisphericLight,
-  Color4,
-} from '@babylonjs/core';
+import { Engine, Scene, ArcRotateCamera, Vector3, HemisphericLight, Color4 } from '@babylonjs/core';
 import '@babylonjs/loaders/glTF';
 import Kotatsu from './kotatsu';
 import Controller from './controller';
@@ -28,21 +21,10 @@ class App {
     scene.clearColor = Color4.FromHexString('#ffcc00');
     scene.useRightHandedSystem = true;
 
-    const camera = new ArcRotateCamera(
-      'camera',
-      Math.PI / 2,
-      Math.PI / 3,
-      6,
-      Vector3.Zero(),
-      scene
-    );
+    const camera = new ArcRotateCamera('camera', Math.PI / 2, Math.PI / 3, 6, Vector3.Zero(), scene);
     camera.fov = 0.3;
     camera.attachControl(canvas, true);
-    var hemiLight: HemisphericLight = new HemisphericLight(
-      'hemiLight',
-      new Vector3(1, 1, 0),
-      scene
-    );
+    var hemiLight: HemisphericLight = new HemisphericLight('hemiLight', new Vector3(1, 1, 0), scene);
 
     // hide/show the Inspector
     window.addEventListener('keydown', (ev) => {

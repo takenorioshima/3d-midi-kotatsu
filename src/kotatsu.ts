@@ -77,11 +77,7 @@ export default class Kotatsu extends AbstractMesh {
         this.heater.parent = this.tableBase;
 
         // Heater Light
-        this.heaterLight = new PointLight(
-          'heaterLight',
-          new Vector3(0, 0.15, 0),
-          scene
-        );
+        this.heaterLight = new PointLight('heaterLight', new Vector3(0, 0.15, 0), scene);
         this.heaterLight.diffuse = new Color3(1, 0, 0);
         this.heaterLight.intensity = 1;
         this.heaterLight.parent = this.heater;
