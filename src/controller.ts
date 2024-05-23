@@ -8,20 +8,13 @@ export default class Controller {
   intervalId: NodeJS.Timeout;
   motion: Motion;
 
-  constructor(
-    public kotatsu: Kotatsu,
-    public scene: Scene,
-    public camera: ArcRotateCamera,
-    public engine: Engine
-  ) {
+  constructor(public kotatsu: Kotatsu, public scene: Scene, public camera: ArcRotateCamera, public engine: Engine) {
     this.motion = new Motion(kotatsu, scene, camera, engine);
 
     WebMidi.enable()
       .then(() => {
         const input = WebMidi.inputs[0];
-        console.log(
-          `[WebMidi] ${input.manufacturer} ${input.name} was detected.`
-        );
+        console.log(`[WebMidi] ${input.manufacturer} ${input.name} was detected.`);
 
         input.addListener('noteon', (e) => {
           const numberOfAnimations = 8;
