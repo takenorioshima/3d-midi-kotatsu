@@ -61,7 +61,10 @@ export default class Controller {
           this.motion.moveCameraBeta(e.value);
         });
       })
-      .catch((err) => alert(err));
+      .catch((err) => {
+        console.log(`[WebMidi] MIDI devices were not detected.`);
+        console.log(err);
+      });
 
     window.addEventListener('keydown', (e) => {
       console.log(e);
