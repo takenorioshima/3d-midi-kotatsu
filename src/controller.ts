@@ -89,6 +89,28 @@ export default class Controller {
                 this.motion.moveCamera();
             }
           }
+
+          // Gate, CV.
+          // Gate: CC#79 | CV: CC#47
+          if (number == 79 && value == 1) {
+            this.motion.heat();
+            const dice = Math.floor(Math.random() * 5);
+            switch (dice) {
+              case 0:
+                this.motion.moveCamera();
+              case 1:
+                this.motion.dissolve();
+              case 2:
+                this.motion.rotateTabletop();
+              case 3:
+                this.motion.changeMaterials();
+              case 4:
+                this.motion.changeClearColor();
+            }
+          }
+          if (number == 47 && typeof value == 'number') {
+            this.motion.scaleFromVelocity(value);
+          }
         });
 
         input.addListener('pitchbend', (e) => {
