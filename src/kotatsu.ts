@@ -17,6 +17,7 @@ export default class Kotatsu extends AbstractMesh {
   tabletop: TransformNode;
   tableBase: AbstractMesh;
   futon: AbstractMesh;
+  futonPolyester: AbstractMesh;
   heater: AbstractMesh;
   heaterLight: PointLight;
   legTL: AbstractMesh;
@@ -48,6 +49,7 @@ export default class Kotatsu extends AbstractMesh {
 
         // Futon
         this.futon = scene.getMeshByName('futon');
+        this.futonPolyester = scene.getMeshByName('futonPolyester');
 
         // Table base
         this.tableBase = scene.getMeshByName('tableBase');
@@ -103,6 +105,9 @@ export default class Kotatsu extends AbstractMesh {
             initialMaterial: mesh.material.clone('initialMaterial'),
           };
         });
+
+        // Show default futon.
+        this.futonPolyester.setEnabled(false);
       })
       .catch(console.error);
   }
