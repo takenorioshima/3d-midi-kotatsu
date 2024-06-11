@@ -8,8 +8,13 @@ export default class Controller {
   intervalId: NodeJS.Timeout;
   motion: Motion;
 
+  kp3X: number;
+  kp3Y: number;
+
   constructor(public kotatsu: Kotatsu, public scene: Scene, public camera: ArcRotateCamera, public engine: Engine) {
     this.motion = new Motion(kotatsu, scene, camera, engine);
+    this.kp3X = 0;
+    this.kp3Y = 0;
 
     WebMidi.enable()
       .then(() => {
@@ -54,7 +59,58 @@ export default class Controller {
         });
 
         input.addListener('controlchange', (e) => {
-          this.motion.floatFuton(e.value);
+          const number = e.controller.number;
+          const value = e.value;
+
+          // KORG KAOSS PAD 3 touch pad.
+          // ON/OFF: CC#92 | X: CC#12 | Y: CC#13
+          if (number == 12 && typeof value == 'number') {
+            this.kp3X = value;
+            this.camera.beta = this.kp3X * Math.PI;
+          }
+          if (number == 13 && typeof value == 'number') {
+            this.kp3Y = value;
+            this.motion.floatFuton(this.kp3Y);
+          }
+          if (number == 92 && value == 1) {
+            const tb = this.kp3Y > 0.5 ? 'T' : 'B';
+            const lr = this.kp3X < 0.5 ? 'L' : 'R';
+            const area = tb + lr;
+            switch (area) {
+              case 'TL':
+                this.motion.changeClearColor();
+              case 'TR':
+                this.motion.dissolve();
+                break;
+              case 'BL':
+                this.motion.changeMaterials();
+                break;
+              case 'BR':
+                this.motion.moveCamera();
+            }
+          }
+
+          // Gate, CV.
+          // Gate: CC#79 | CV: CC#47
+          if (number == 79 && value == 1) {
+            this.motion.heat();
+            const dice = Math.floor(Math.random() * 5);
+            switch (dice) {
+              case 0:
+                this.motion.moveCamera();
+              case 1:
+                this.motion.dissolve();
+              case 2:
+                this.motion.rotateTabletop();
+              case 3:
+                this.motion.changeMaterials();
+              case 4:
+                this.motion.changeClearColor();
+            }
+          }
+          if (number == 47 && typeof value == 'number') {
+            this.motion.scaleFromVelocity(value);
+          }
         });
 
         input.addListener('pitchbend', (e) => {
