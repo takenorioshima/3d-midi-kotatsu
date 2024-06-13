@@ -108,9 +108,6 @@ export default class Kotatsu extends AbstractMesh {
 
         // Show default futon.
         this.futonPolyester.setEnabled(false);
-
-        // Hide kotatsu temporarily.
-        this.root.setEnabled(false);
       })
       .catch(console.error);
   }

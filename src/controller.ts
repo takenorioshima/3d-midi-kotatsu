@@ -9,8 +9,6 @@ export default class Controller {
   intervalId: NodeJS.Timeout;
   motion: Motion;
 
-  sceneIndex: number;
-
   kp3X: number;
   kp3Y: number;
 
@@ -24,7 +22,6 @@ export default class Controller {
     this.motion = new Motion(kotatsu, embroidery, scene, camera, engine);
     this.kp3X = 0;
     this.kp3Y = 0;
-    this.sceneIndex = 0;
 
     WebMidi.enable()
       .then(() => {
@@ -168,7 +165,7 @@ export default class Controller {
           this.motion.zoomToMesh();
           break;
         case 'KeyS':
-          this.changeScene();
+          this.motion.changeScene();
           break;
         case 'Escape':
           this.motion.reset();
@@ -176,20 +173,6 @@ export default class Controller {
     });
 
     this.isAutoPlay = false;
-  }
-
-  changeScene() {
-    if (this.sceneIndex == 0) {
-      this.embroidery.root.setEnabled(true);
-      this.kotatsu.root.setEnabled(false);
-    } else {
-      this.embroidery.root.setEnabled(false);
-      this.kotatsu.root.setEnabled(true);
-    }
-    this.sceneIndex++;
-    if (this.sceneIndex > 1) {
-      this.sceneIndex = 0;
-    }
   }
 
   autoPlay(autoPlayButton: HTMLElement) {

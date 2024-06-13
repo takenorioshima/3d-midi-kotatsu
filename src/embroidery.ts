@@ -1,4 +1,4 @@
-import { AbstractMesh, Scene, SceneLoader, TransformNode } from '@babylonjs/core';
+import { AbstractMesh, Scene, SceneLoader, TransformNode, Vector3 } from '@babylonjs/core';
 
 export default class Embroidery extends AbstractMesh {
   root: AbstractMesh;
@@ -40,6 +40,7 @@ export default class Embroidery extends AbstractMesh {
             initialPosition: node.position.clone(),
           };
         });
+        this.root.scaling = Vector3.Zero();
       })
       .catch(console.error);
   }

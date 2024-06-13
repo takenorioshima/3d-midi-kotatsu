@@ -21,6 +21,7 @@ export default class Motion {
   easeOutFunction: CircleEase;
   hemiLight: Light;
   zoomToMeshIndex: number;
+  sceneIndex: number;
 
   constructor(
     public kotatsu: Kotatsu,
@@ -31,6 +32,7 @@ export default class Motion {
   ) {
     this.clearColorIndex = 0;
     this.zoomToMeshIndex = 0;
+    this.sceneIndex = 0;
     this.fps = 60;
 
     this.easeOutFunction = new CircleEase();
@@ -155,7 +157,7 @@ export default class Motion {
   }
 
   bounce() {
-    const root = this.kotatsu.root;
+    const root = this.sceneIndex == 0 ? this.kotatsu.root : this.embroidery.root;
     this._animate('bounce', root, 'scaling', 15, new Vector3(1.2, 1.2, 1.2), Vector3.One);
   }
 
@@ -216,6 +218,24 @@ export default class Motion {
         const range = ((value - valueMax) * (rangeMax - rangeMin)) / (valueMax - valueMin) + rangeMax;
         camera.beta = Math.PI * range;
       }
+    }
+  }
+
+  changeScene() {
+    if (this.sceneIndex == 0) {
+      // Hide kotatsu, show embroidery.
+      this._animate('scaling', this.embroidery.root, 'scaling', 20, this.embroidery.root.scaling, Vector3.One);
+      this._animate('scaling', this.kotatsu.root, 'scaling', 20, this.kotatsu.root.scaling, Vector3.Zero);
+      this.kotatsu.heaterLight.setEnabled(false);
+    } else {
+      // Show kotatsu, hide embroidery.
+      this._animate('scaling', this.embroidery.root, 'scaling', 20, this.embroidery.root.scaling, Vector3.Zero);
+      this._animate('scaling', this.kotatsu.root, 'scaling', 20, this.kotatsu.root.scaling, Vector3.One);
+      this.kotatsu.heaterLight.setEnabled(true);
+    }
+    this.sceneIndex++;
+    if (this.sceneIndex > 1) {
+      this.sceneIndex = 0;
     }
   }
 
