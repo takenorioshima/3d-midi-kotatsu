@@ -30,6 +30,10 @@ export default class Embroidery extends AbstractMesh {
         this.ri = scene.getMeshByName('ri');
         this.o2 = scene.getMeshByName('o2');
 
+        this.root.metadata = {
+          isWireframe: false,
+        };
+
         const childTransformNodes = this.root.getChildTransformNodes(true);
         childTransformNodes.forEach((node) => {
           node.metadata = {

@@ -101,21 +101,32 @@ export default class Motion {
   }
 
   changeMaterials(wireframe: boolean = false) {
-    const root = this.kotatsu.root;
-    const childMeshes = root.getChildMeshes();
-    if (!root.metadata.isNormalMaterial) {
-      childMeshes.forEach((mesh) => {
+    const kotatsu = this.kotatsu.root;
+    const kotatsuMeshes = kotatsu.getChildMeshes();
+    if (!kotatsu.metadata.isNormalMaterial) {
+      kotatsuMeshes.forEach((mesh) => {
         mesh.material = new NormalMaterial('normalMaterial', this.scene);
         mesh.material.wireframe = wireframe ? true : false;
-        root.metadata.isNormalMaterial = true;
+        kotatsu.metadata.isNormalMaterial = true;
       });
     } else {
-      childMeshes.forEach((mesh) => {
+      kotatsuMeshes.forEach((mesh) => {
         mesh.material = mesh.metadata.initialMaterial;
         mesh.material.wireframe = false;
-        root.metadata.isNormalMaterial = false;
+        kotatsu.metadata.isNormalMaterial = false;
       });
     }
+
+    const embroidery = this.embroidery.root;
+    const embroideryMeshes = embroidery.getChildMeshes();
+    embroideryMeshes.forEach((mesh) => {
+      if (!embroidery.metadata.isWireframe) {
+        mesh.material.wireframe = true;
+      } else {
+        mesh.material.wireframe = false;
+      }
+    });
+    embroidery.metadata.isWireframe = !embroidery.metadata.isWireframe;
   }
 
   zoomToMesh() {
