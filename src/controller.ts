@@ -1,5 +1,6 @@
 import { ArcRotateCamera, Engine, Scene } from '@babylonjs/core';
 import Kotatsu from './kotatsu';
+import Embroidery from './embroidery';
 import { WebMidi } from 'webmidi';
 import Motion from './motion';
 
@@ -8,13 +9,22 @@ export default class Controller {
   intervalId: NodeJS.Timeout;
   motion: Motion;
 
+  sceneIndex: number;
+
   kp3X: number;
   kp3Y: number;
 
-  constructor(public kotatsu: Kotatsu, public scene: Scene, public camera: ArcRotateCamera, public engine: Engine) {
-    this.motion = new Motion(kotatsu, scene, camera, engine);
+  constructor(
+    public kotatsu: Kotatsu,
+    public embroidery: Embroidery,
+    public scene: Scene,
+    public camera: ArcRotateCamera,
+    public engine: Engine
+  ) {
+    this.motion = new Motion(kotatsu, embroidery, scene, camera, engine);
     this.kp3X = 0;
     this.kp3Y = 0;
+    this.sceneIndex = 0;
 
     WebMidi.enable()
       .then(() => {
@@ -36,12 +46,15 @@ export default class Controller {
               break;
             case 2:
               this.motion.heat();
+              this.motion.zoomToMesh();
               break;
             case 3:
               this.motion.dissolve();
+              this.motion.zoomToMesh();
               break;
             case 4:
               this.motion.rotateTabletop();
+              this.motion.zoomToMesh();
               break;
             case 5:
               this.motion.changeMaterials();
@@ -100,8 +113,10 @@ export default class Controller {
                 this.motion.moveCamera();
               case 1:
                 this.motion.dissolve();
+                this.motion.zoomToMesh();
               case 2:
                 this.motion.rotateTabletop();
+                this.motion.zoomToMesh();
               case 3:
                 this.motion.changeMaterials();
               case 4:
@@ -149,12 +164,32 @@ export default class Controller {
         case 'Digit8':
           this.motion.bounce();
           break;
+        case 'KeyZ':
+          this.motion.zoomToMesh();
+          break;
+        case 'KeyS':
+          this.changeScene();
+          break;
         case 'Escape':
           this.motion.reset();
       }
     });
 
     this.isAutoPlay = false;
+  }
+
+  changeScene() {
+    if (this.sceneIndex == 0) {
+      this.embroidery.root.setEnabled(true);
+      this.kotatsu.root.setEnabled(false);
+    } else {
+      this.embroidery.root.setEnabled(false);
+      this.kotatsu.root.setEnabled(true);
+    }
+    this.sceneIndex++;
+    if (this.sceneIndex > 1) {
+      this.sceneIndex = 0;
+    }
   }
 
   autoPlay(autoPlayButton: HTMLElement) {

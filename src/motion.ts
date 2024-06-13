@@ -13,15 +13,24 @@ import {
 } from '@babylonjs/core';
 import { NormalMaterial } from '@babylonjs/materials';
 import Kotatsu from './kotatsu';
+import Embroidery from './embroidery';
 
 export default class Motion {
   clearColorIndex: number;
   fps: number;
   easeOutFunction: CircleEase;
   hemiLight: Light;
+  zoomToMeshIndex: number;
 
-  constructor(public kotatsu: Kotatsu, public scene: Scene, public camera: ArcRotateCamera, public engine: Engine) {
+  constructor(
+    public kotatsu: Kotatsu,
+    public embroidery: Embroidery,
+    public scene: Scene,
+    public camera: ArcRotateCamera,
+    public engine: Engine
+  ) {
     this.clearColorIndex = 0;
+    this.zoomToMeshIndex = 0;
     this.fps = 60;
 
     this.easeOutFunction = new CircleEase();
@@ -109,6 +118,31 @@ export default class Motion {
     }
   }
 
+  zoomToMesh() {
+    const targets = ['take', 'oreo', 'toreko', 'o1', 'cha', 'no', 'ma', 'to', 'ri', 'o2'];
+    const target = targets[this.zoomToMeshIndex];
+    targets.forEach((e) => {
+      if (e === target) {
+        const target = this.embroidery[e];
+        this._animate('position', target, 'position', 10, target.position, Vector3.Zero);
+        if (e.length < 4) {
+          this._animate('scaling', target, 'scaling', 10, target.scaling, new Vector3(5, 5, 5));
+        } else {
+          this._animate('scaling', target, 'scaling', 10, target.scaling, new Vector3(2, 2, 2));
+        }
+      } else {
+        const target = this.embroidery[e];
+        this._animate('position', target, 'position', 10, target.position, this._randomVector3(4));
+        this._animate('rotation', target, 'rotation', 10, target.rotation, this._randomVector3);
+        this._animate('scaling', target, 'scaling', 10, target.scaling, new Vector3(1, 1, 1));
+      }
+    });
+    this.zoomToMeshIndex++;
+    if (this.zoomToMeshIndex >= targets.length) {
+      this.zoomToMeshIndex = 0;
+    }
+  }
+
   bounce() {
     const root = this.kotatsu.root;
     this._animate('bounce', root, 'scaling', 15, new Vector3(1.2, 1.2, 1.2), Vector3.One);
@@ -120,17 +154,13 @@ export default class Motion {
     this._moveScaleAndRotate(this.kotatsu.tabletop, true);
     this._moveScaleAndRotate(this.kotatsu.tableBase, true);
 
-    // Reset camera.
-    const camera = this.camera;
-    const alpha = Math.PI * 2;
-    const beta = -Math.PI;
-    const radius = 6;
-
-    this._animate('moveCameraAlpha', camera, 'alpha', 20, camera.alpha, alpha);
-
-    this._animate('moveCameraBeta', camera, 'beta', 20, camera.beta, beta);
-
-    this._animate('moveCameraRadius', camera, 'radius', 20, camera.radius, radius);
+    // Reset embroidery and text positions.
+    const embroideryChildren = this.embroidery.root.getChildTransformNodes(true);
+    embroideryChildren.forEach((node) => {
+      this._animate('scaling', node, 'scaling', 10, node.scaling, Vector3.One);
+      this._animate('rotation', node, 'rotation', 10, node.rotation, Vector3.Zero);
+      this._animate('position', node, 'position', 10, node.position, node.metadata.initialPosition);
+    });
 
     // Reset materials.
     const root = this.kotatsu.root;

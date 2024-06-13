@@ -3,6 +3,7 @@ import '@babylonjs/inspector';
 import { Engine, Scene, ArcRotateCamera, Vector3, HemisphericLight, Color4 } from '@babylonjs/core';
 import '@babylonjs/loaders/glTF';
 import Kotatsu from './kotatsu';
+import Embroidery from './embroidery';
 import Controller from './controller';
 
 class App {
@@ -39,9 +40,10 @@ class App {
 
     // Load model.
     const kotatsu = new Kotatsu(scene);
+    const embroidery = new Embroidery(scene);
 
     // Initialize controller.
-    const controller = new Controller(kotatsu, scene, camera, engine);
+    const controller = new Controller(kotatsu, embroidery, scene, camera, engine);
 
     // Keep aspect ratio on window resize.
     window.addEventListener('resize', function () {
