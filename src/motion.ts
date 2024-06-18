@@ -176,16 +176,23 @@ export default class Motion {
     });
 
     // Reset materials.
-    const root = this.kotatsu.root;
-    const childMeshes = root.getChildMeshes();
-    childMeshes.forEach((mesh) => {
+    const kotatsu = this.kotatsu.root;
+    const kotatsuMeshes = kotatsu.getChildMeshes();
+    kotatsuMeshes.forEach((mesh) => {
       mesh.material = mesh.metadata.initialMaterial;
       mesh.material.wireframe = false;
     });
 
+    const embroidery = this.embroidery.root;
+    const embroideryMeshes = embroidery.getChildMeshes();
+    embroideryMeshes.forEach((mesh) => {
+      mesh.material.wireframe = false;
+    });
+
     // Reset animation flags.
-    root.metadata.isNormalMaterial = false;
-    root.metadata.isShuffled = false;
+    embroidery.metadata.isNormalMaterial = false;
+    embroidery.metadata.isShuffled = false;
+    embroidery.metadata.isWireframe = false;
   }
 
   scaleFromVelocity(velocity: number) {
