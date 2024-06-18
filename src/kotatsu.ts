@@ -108,10 +108,6 @@ export default class Kotatsu extends AbstractMesh {
 
         // Show default futon.
         this.futonPolyester.setEnabled(false);
-
-        // Hide on initialize.
-        this.root.scaling = Vector3.Zero();
-        this.heaterLight.setEnabled(false);
       })
       .catch(console.error);
   }

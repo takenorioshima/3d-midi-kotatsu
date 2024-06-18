@@ -32,7 +32,7 @@ export default class Motion {
   ) {
     this.clearColorIndex = 0;
     this.zoomToMeshIndex = 0;
-    this.activeModel = 'embroidery';
+    this.activeModel = 'kotatsu';
     this.fps = 60;
 
     this.easeOutFunction = new CircleEase();

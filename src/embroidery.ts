@@ -40,6 +40,9 @@ export default class Embroidery extends AbstractMesh {
             initialPosition: node.position.clone(),
           };
         });
+
+        // Hide on initialize.
+        this.root.scaling = Vector3.Zero();
       })
       .catch(console.error);
   }
