@@ -33,6 +33,7 @@ export default class Keydown {
           this.motion.zoomToMesh();
           break;
         case 'KeyS':
+          this.motion.reset();
           this.motion.changeModel();
           break;
         case 'Escape':

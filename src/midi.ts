@@ -16,10 +16,14 @@ export default class Midi {
         console.log(`[WebMidi] ${input.manufacturer} ${input.name} was detected.`);
 
         input.addListener('noteon', (e) => {
-          const numberOfAnimations = 8;
-          const group = e.note.number % numberOfAnimations;
-
           this.motion.scaleFromVelocity(e.note.attack);
+
+          const numberOfAnimations = 8;
+          let group = e.note.number % numberOfAnimations;
+
+          if (e.note.number == 5) {
+            group = 10;
+          }
 
           switch (group) {
             case 0:
@@ -48,6 +52,10 @@ export default class Midi {
               break;
             case 7:
               this.motion.reset();
+              break;
+            case 10:
+              this.motion.reset();
+              this.motion.changeModel();
           }
         });
 
