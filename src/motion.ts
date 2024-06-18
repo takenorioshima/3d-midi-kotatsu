@@ -196,7 +196,7 @@ export default class Motion {
   }
 
   scaleFromVelocity(velocity: number) {
-    const target = this.kotatsu.root;
+    const target = this[this.activeModel].root;
     const scalingTo = new Vector3(1 + velocity, 1 + velocity, 1 + velocity);
     this._animate('scaleFromVelocity', target, 'scaling', 10, target.scaling, scalingTo);
   }
