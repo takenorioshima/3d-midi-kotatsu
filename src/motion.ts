@@ -13,15 +13,26 @@ import {
 } from '@babylonjs/core';
 import { NormalMaterial } from '@babylonjs/materials';
 import Kotatsu from './kotatsu';
+import Embroidery from './embroidery';
 
 export default class Motion {
   clearColorIndex: number;
   fps: number;
   easeOutFunction: CircleEase;
   hemiLight: Light;
+  zoomToMeshIndex: number;
+  activeModel: string;
 
-  constructor(public kotatsu: Kotatsu, public scene: Scene, public camera: ArcRotateCamera, public engine: Engine) {
+  constructor(
+    public kotatsu: Kotatsu,
+    public embroidery: Embroidery,
+    public scene: Scene,
+    public camera: ArcRotateCamera,
+    public engine: Engine
+  ) {
     this.clearColorIndex = 0;
+    this.zoomToMeshIndex = 0;
+    this.activeModel = 'kotatsu';
     this.fps = 60;
 
     this.easeOutFunction = new CircleEase();
@@ -92,25 +103,61 @@ export default class Motion {
   }
 
   changeMaterials(wireframe: boolean = false) {
-    const root = this.kotatsu.root;
-    const childMeshes = root.getChildMeshes();
-    if (!root.metadata.isNormalMaterial) {
-      childMeshes.forEach((mesh) => {
+    const kotatsu = this.kotatsu.root;
+    const kotatsuMeshes = kotatsu.getChildMeshes();
+    if (!kotatsu.metadata.isNormalMaterial) {
+      kotatsuMeshes.forEach((mesh) => {
         mesh.material = new NormalMaterial('normalMaterial', this.scene);
         mesh.material.wireframe = wireframe ? true : false;
-        root.metadata.isNormalMaterial = true;
+        kotatsu.metadata.isNormalMaterial = true;
       });
     } else {
-      childMeshes.forEach((mesh) => {
+      kotatsuMeshes.forEach((mesh) => {
         mesh.material = mesh.metadata.initialMaterial;
         mesh.material.wireframe = false;
-        root.metadata.isNormalMaterial = false;
+        kotatsu.metadata.isNormalMaterial = false;
       });
+    }
+
+    const embroidery = this.embroidery.root;
+    const embroideryMeshes = embroidery.getChildMeshes();
+    embroideryMeshes.forEach((mesh) => {
+      if (!embroidery.metadata.isWireframe) {
+        mesh.material.wireframe = true;
+      } else {
+        mesh.material.wireframe = false;
+      }
+    });
+    embroidery.metadata.isWireframe = !embroidery.metadata.isWireframe;
+  }
+
+  zoomToMesh() {
+    const targets = ['take', 'oreo', 'toreko', 'o1', 'cha', 'no', 'ma', 'to', 'ri', 'o2'];
+    const target = targets[this.zoomToMeshIndex];
+    targets.forEach((e) => {
+      if (e === target) {
+        const target = this.embroidery[e];
+        this._animate('position', target, 'position', 10, target.position, Vector3.Zero);
+        if (e.length < 4) {
+          this._animate('scaling', target, 'scaling', 10, target.scaling, new Vector3(5, 5, 5));
+        } else {
+          this._animate('scaling', target, 'scaling', 10, target.scaling, new Vector3(2, 2, 2));
+        }
+      } else {
+        const target = this.embroidery[e];
+        this._animate('position', target, 'position', 10, target.position, this._randomVector3(4));
+        this._animate('rotation', target, 'rotation', 10, target.rotation, this._randomVector3);
+        this._animate('scaling', target, 'scaling', 10, target.scaling, new Vector3(1, 1, 1));
+      }
+    });
+    this.zoomToMeshIndex++;
+    if (this.zoomToMeshIndex >= targets.length) {
+      this.zoomToMeshIndex = 0;
     }
   }
 
   bounce() {
-    const root = this.kotatsu.root;
+    const root = this[this.activeModel].root;
     this._animate('bounce', root, 'scaling', 15, new Vector3(1.2, 1.2, 1.2), Vector3.One);
   }
 
@@ -120,33 +167,36 @@ export default class Motion {
     this._moveScaleAndRotate(this.kotatsu.tabletop, true);
     this._moveScaleAndRotate(this.kotatsu.tableBase, true);
 
-    // Reset camera.
-    const camera = this.camera;
-    const alpha = Math.PI * 2;
-    const beta = -Math.PI;
-    const radius = 6;
-
-    this._animate('moveCameraAlpha', camera, 'alpha', 20, camera.alpha, alpha);
-
-    this._animate('moveCameraBeta', camera, 'beta', 20, camera.beta, beta);
-
-    this._animate('moveCameraRadius', camera, 'radius', 20, camera.radius, radius);
+    // Reset embroidery and text positions.
+    const embroideryChildren = this.embroidery.root.getChildTransformNodes(true);
+    embroideryChildren.forEach((node) => {
+      this._animate('scaling', node, 'scaling', 10, node.scaling, Vector3.One);
+      this._animate('rotation', node, 'rotation', 10, node.rotation, Vector3.Zero);
+      this._animate('position', node, 'position', 10, node.position, node.metadata.initialPosition);
+    });
 
     // Reset materials.
-    const root = this.kotatsu.root;
-    const childMeshes = root.getChildMeshes();
-    childMeshes.forEach((mesh) => {
+    const kotatsu = this.kotatsu.root;
+    const kotatsuMeshes = kotatsu.getChildMeshes();
+    kotatsuMeshes.forEach((mesh) => {
       mesh.material = mesh.metadata.initialMaterial;
       mesh.material.wireframe = false;
     });
 
+    const embroidery = this.embroidery.root;
+    const embroideryMeshes = embroidery.getChildMeshes();
+    embroideryMeshes.forEach((mesh) => {
+      mesh.material.wireframe = false;
+    });
+
     // Reset animation flags.
-    root.metadata.isNormalMaterial = false;
-    root.metadata.isShuffled = false;
+    embroidery.metadata.isNormalMaterial = false;
+    embroidery.metadata.isShuffled = false;
+    embroidery.metadata.isWireframe = false;
   }
 
   scaleFromVelocity(velocity: number) {
-    const target = this.kotatsu.root;
+    const target = this[this.activeModel].root;
     const scalingTo = new Vector3(1 + velocity, 1 + velocity, 1 + velocity);
     this._animate('scaleFromVelocity', target, 'scaling', 10, target.scaling, scalingTo);
   }
@@ -175,6 +225,22 @@ export default class Motion {
         const range = ((value - valueMax) * (rangeMax - rangeMin)) / (valueMax - valueMin) + rangeMax;
         camera.beta = Math.PI * range;
       }
+    }
+  }
+
+  changeModel() {
+    if (this.activeModel == 'kotatsu') {
+      // Hide kotatsu, show embroidery.
+      this._animate('scaling', this.embroidery.root, 'scaling', 20, this.embroidery.root.scaling, Vector3.One);
+      this._animate('scaling', this.kotatsu.root, 'scaling', 20, this.kotatsu.root.scaling, Vector3.Zero);
+      this.kotatsu.heaterLight.setEnabled(false);
+      this.activeModel = 'embroidery';
+    } else if (this.activeModel == 'embroidery') {
+      // Show kotatsu, hide embroidery.
+      this._animate('scaling', this.embroidery.root, 'scaling', 20, this.embroidery.root.scaling, Vector3.Zero);
+      this._animate('scaling', this.kotatsu.root, 'scaling', 20, this.kotatsu.root.scaling, Vector3.One);
+      this.kotatsu.heaterLight.setEnabled(true);
+      this.activeModel = 'kotatsu';
     }
   }
 
