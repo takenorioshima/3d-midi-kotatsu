@@ -5,7 +5,6 @@ import '@babylonjs/loaders/glTF';
 import Kotatsu from './kotatsu';
 import Embroidery from './embroidery';
 import Controller from './controller';
-import { AsciiArtPostProcess } from '@babylonjs/post-processes/asciiArt';
 
 class App {
   constructor() {
