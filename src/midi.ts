@@ -18,7 +18,7 @@ export default class Midi {
         input.addListener('noteon', (e) => {
           this.motion.scaleFromVelocity(e.note.attack);
 
-          const numberOfAnimations = 8;
+          const numberOfAnimations = 9;
           let group = e.note.number % numberOfAnimations;
 
           if (e.note.number == 5) {
@@ -52,6 +52,9 @@ export default class Midi {
               break;
             case 7:
               this.motion.reset();
+              break;
+            case 8:
+              this.motion.asciiArt();
               break;
             case 10:
               this.motion.reset();

@@ -29,6 +29,9 @@ export default class Keydown {
         case 'Digit8':
           this.motion.bounce();
           break;
+        case 'Digit9':
+          this.motion.asciiArt();
+          break;
         case 'KeyZ':
           this.motion.zoomToMesh();
           break;
