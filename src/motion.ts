@@ -14,6 +14,7 @@ import {
 import { NormalMaterial } from '@babylonjs/materials';
 import Kotatsu from './kotatsu';
 import Embroidery from './embroidery';
+import { AsciiArtPostProcess } from '@babylonjs/post-processes/asciiArt';
 
 export default class Motion {
   clearColorIndex: number;
@@ -22,6 +23,7 @@ export default class Motion {
   hemiLight: Light;
   zoomToMeshIndex: number;
   activeModel: string;
+  postProcess: AsciiArtPostProcess;
 
   constructor(
     public kotatsu: Kotatsu,
@@ -39,6 +41,11 @@ export default class Motion {
     this.easeOutFunction.setEasingMode(EasingFunction.EASINGMODE_EASEOUT);
 
     this.hemiLight = this.scene.getLightByName('hemiLight');
+
+    this.postProcess = new AsciiArtPostProcess('AsciiArt', camera, {
+      font: '16px Monospace',
+    });
+    this.postProcess.mixToNormal = 1;
   }
 
   changeClearColor() {
@@ -189,6 +196,9 @@ export default class Motion {
       mesh.material.wireframe = false;
     });
 
+    // Reset post process.
+    this.postProcess.mixToNormal = 1;
+
     // Reset animation flags.
     embroidery.metadata.isNormalMaterial = false;
     embroidery.metadata.isShuffled = false;
@@ -226,6 +236,10 @@ export default class Motion {
         camera.beta = Math.PI * range;
       }
     }
+  }
+
+  asciiArt() {
+    this.postProcess.mixToNormal = this.postProcess.mixToNormal == 1 ? 0 : 1;
   }
 
   changeModel() {

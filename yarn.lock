@@ -15,6 +15,7 @@ __metadata:
     "@babylonjs/inspector": ^7.7.0
     "@babylonjs/loaders": ^7.7.0
     "@babylonjs/materials": ^7.7.0
+    "@babylonjs/post-processes": ^7.11.2
     "@babylonjs/serializers": ^7.7.0
     "@types/react": ^18.3.2
     "@types/react-dom": ^18.3.0
@@ -100,6 +101,15 @@ __metadata:
   peerDependencies:
     "@babylonjs/core": ^7.0.0
   checksum: 980f1d8527f0ffda98b4f0a3049a062ccd2609e58332b344216a839b6f905a14939434599b9f01a2d05e8848a0cd3bdc73c7af8bc7bbcee7d6c588836e653466
+  languageName: node
+  linkType: hard
+
+"@babylonjs/post-processes@npm:^7.11.2":
+  version: 7.11.2
+  resolution: "@babylonjs/post-processes@npm:7.11.2"
+  peerDependencies:
+    "@babylonjs/core": ^7.0.0
+  checksum: b6f147e64a04f73e3e30458e6842e10db03c5dd5aac0eb3089f7b93a80fec0ea66933b1a25cd32b3b08fb91a2f533bb0e5f1f2900ccab2b5ce45929c57add45a
   languageName: node
   linkType: hard
 
