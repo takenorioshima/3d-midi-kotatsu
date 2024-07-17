@@ -9,21 +9,21 @@
     "compress": "run gltf-pipeline -i public/models/kotatsu.glb -o public/models/kotatsu.glb -d"
   },
   "devDependencies": {
-    "@babylonjs/core": "^7.12.0",
-    "@babylonjs/gui": "^7.12.0",
-    "@babylonjs/gui-editor": "^7.12.0",
-    "@babylonjs/inspector": "^7.12.0",
-    "@babylonjs/loaders": "^7.12.0",
-    "@babylonjs/materials": "^7.12.0",
-    "@babylonjs/post-processes": "^7.12.0",
-    "@babylonjs/serializers": "^7.12.0",
+    "@babylonjs/core": "^7.15.1",
+    "@babylonjs/gui": "^7.15.1",
+    "@babylonjs/gui-editor": "^7.15.1",
+    "@babylonjs/inspector": "^7.15.1",
+    "@babylonjs/loaders": "^7.15.1",
+    "@babylonjs/materials": "^7.15.1",
+    "@babylonjs/post-processes": "^7.15.1",
+    "@babylonjs/serializers": "^7.15.1",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
-    "babylonjs-gltf2interface": "^7.12.0",
+    "babylonjs-gltf2interface": "^7.15.1",
     "gh-pages": "^6.1.1",
     "gltf-pipeline": "^4.1.0",
-    "typescript": "^5.5.2",
-    "vite": "^5.3.1",
+    "typescript": "^5.5.3",
+    "vite": "^5.3.4",
     "webmidi": "^3.1.9"
   }
 }
