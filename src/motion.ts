@@ -268,7 +268,17 @@ export default class Motion {
     easingFunction?: CircleEase
   ) {
     easingFunction = easingFunction ? easingFunction : this.easeOutFunction;
-    Animation.CreateAndStartAnimation(name, target, targetProperty, this.fps, totalFrame, from, to, 0, easingFunction);
+    Animation.CreateAndStartAnimation(
+      name,
+      target,
+      targetProperty,
+      this.fps,
+      totalFrame,
+      from,
+      to,
+      Animation.ANIMATIONLOOPMODE_CONSTANT,
+      easingFunction
+    );
   }
 
   private _randomVector3(multiple: number = 2) {
