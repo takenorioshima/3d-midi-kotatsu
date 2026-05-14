@@ -991,14 +991,14 @@ __metadata:
   linkType: hard
 
 "dompurify@npm:^3.0.2":
-  version: 3.2.4
-  resolution: "dompurify@npm:3.2.4"
+  version: 3.4.3
+  resolution: "dompurify@npm:3.4.3"
   dependencies:
     "@types/trusted-types": ^2.0.7
   dependenciesMeta:
     "@types/trusted-types":
       optional: true
-  checksum: 7a299cbbfe3b3d189e5fc77ab94ad312807e37fda1e24a927548b76a58a9c98137e612ce8d94a2f6cd3d3db59844f14fca477676b5eae6103568a82142771df6
+  checksum: 26364ee981b401c452fd50a3e2bd8f46871db49eb1f6b7206004dcbd35a73e0005ef9fb3aeafa7433975faa98ccfe81c891b3344a938236ab9faefb6af0897a3
   languageName: node
   linkType: hard
 
